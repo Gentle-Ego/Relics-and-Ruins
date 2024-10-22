@@ -1,0 +1,12 @@
+{
+    "characters": [
+      {
+        "name": "Thorin",
+        "race": "Dwarf",
+        "sex": "M",
+        "coins": 10,
+        "level": 1
+      }
+    ]
+  }
+  
