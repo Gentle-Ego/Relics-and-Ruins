@@ -9,14 +9,29 @@ using namespace std;
 
 const string RACES[5]={"Human", "Elf", "Dwarf", "Orc", "Halflingl"};
 const int START_COINS = 10;
-const char SEX [2] = {'M', 'F'};
+const string SEX [2] = {"M", "F"};
 
-void write_character_to_json(const string& name, const string& race, char sex, int coins) {
+class Character
+{
+public:
+    string name, race, sex;
+    int coins, level;
+
+    // Costruttore di default
+    Character() : coins(START_COINS), level(1) {}
+
+    // Costruttore parametrico
+    Character(string n, string r, string s, int c = START_COINS, int l = 1)
+        : name(n), race(r), sex(s), coins(c), level(l) {}
+};
+
+void write_character_to_json(string name, string race, string sex, int coins, int level) {
     json character = {
         {"name", name},
         {"race", race},
-        {"sex", string(1, sex)},  // Convertire char a string per JSON
-        {"coins", coins}
+        {"sex", sex},  // Convertire char a string per JSON
+        {"coins", coins},
+        {"level", level}
     };
 
     // Carica i personaggi esistenti se il file esiste, altrimenti crea un nuovo JSON
@@ -41,9 +56,20 @@ void write_character_to_json(const string& name, const string& race, char sex, i
     }
 }
 
-void start_game()
+// Funzione per convertire da JSON a oggetto Character
+Character fromJSONtoChar(json ch)
 {
-    string scelta;
+    Character c(ch["name"], ch["race"], ch["sex"], ch["coins"], ch["level"]);
+    return c;
+}
+
+void start_game(Character character)
+{
+
+}
+
+void select_char(string scelta="")
+{
     do{
         cout << "Do you want to start from scratch? (YES or NO)" << endl;
         cin >> scelta;
@@ -55,32 +81,46 @@ void start_game()
             {
                 char_file >> characters;
                 char_file.close();
+                string char_name;
+
+                // Stampo i vari personaggi chiedendo fra quali scegliere
+                cout << "\n\n-------------------\nSELECT YOUR CHARACTER!\n-------------------" << endl;
+                for (const auto& character : characters["characters"]) {
+                    cout << "Name: " << character["name"] << endl;
+                    cout << "Race: " << character["race"] << endl;
+                    cout << "Sex: " << character["sex"] << endl;
+                    cout << "Coins: " << character["coins"] << endl;
+                    cout << "Level: " << character["level"] << endl;
+                    cout << "-------------------" << endl;
+                }
+
+
+                cout << "\nWhat's the name of the choosen character?\n> ";
+                cin >> char_name;
+                for (const auto& character : characters["characters"]){
+                    if(character["name"]==char_name){
+                        Character chosen_char = fromJSONtoChar(character);
+                        cout << "You selected: " << chosen_char.name << " (Level " << chosen_char.level << ")\n";
+                        start_game(chosen_char);
+                    }
+                }
+
+            } else
+            {
+                cout << "No characters found. Please start a new game." << endl;
+                string sc="YES";
+                select_char(sc);
             }
         } else if(scelta=="YES") 
         {
             cout<<"Create your character:\n> ";
         }
-    }while(scelta!="YES" || scelta!="NO")
+    }while(scelta!="YES" && scelta!="NO");
 }
-
-class Character
-{
-    string name, race;
-    char sex;
-    int coins;
-    Character () {}
-    Character (string n, string r, char s) 
-    {
-        name=n;
-        race=r;
-        sex=s;
-        coins=START_COINS;
-    }
-};
 
 int main()
 {
-    start_game();
+    select_char();
 
     return 0;
 }
