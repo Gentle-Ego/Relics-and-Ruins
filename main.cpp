@@ -7,7 +7,9 @@ using json = nlohmann::json;
 using namespace std;
 
 
-const string RACES[5]={"Human", "Elf", "Dwarf", "Orc", "Halflingl"};
+const vector<string> RACES={"Human", "Elf", "Dwarf", "Orc", "Halfling"};
+auto first = RACES.begin();
+auto last = RACES.end();
 const int START_COINS = 10;
 const string SEX [2] = {"M", "F"};
 
@@ -25,13 +27,13 @@ public:
         : name(n), race(r), sex(s), coins(c), level(l) {}
 };
 
-void write_character_to_json(string name, string race, string sex, int coins, int level) {
+void write_character_to_json(Character charac) {
     json character = {
-        {"name", name},
-        {"race", race},
-        {"sex", sex},  // Convertire char a string per JSON
-        {"coins", coins},
-        {"level", level}
+        {"name", charac.name},
+        {"race", charac.race},
+        {"sex", charac.sex},  // Convertire char a string per JSON
+        {"coins", charac.coins},
+        {"level", charac.level}
     };
 
     // Carica i personaggi esistenti se il file esiste, altrimenti crea un nuovo JSON
@@ -113,7 +115,27 @@ void select_char(string scelta="")
             }
         } else if(scelta=="YES") 
         {
-            cout<<"Create your character:\n> ";
+            Character chosen_char;
+            string r="Human", s="M";
+
+            cout << "Create your character:\nName: ";
+            cin >> chosen_char.name;
+
+            do{
+                cout << "Race (select from Human, Elf, Dwarf, Orc, Halfling): ";
+                cin >> r;
+            }while(find(first, last, r)==RACES.end());
+            chosen_char.race = r;
+
+            do{
+                cout << "Sex (insert M or F): ";
+                cin >> s;
+            }while(s!="M" && s!="F");
+            chosen_char.sex = s;
+
+            cout << "You created: " << chosen_char.name << " (Level " << chosen_char.level << ")\n";
+            write_character_to_json(chosen_char);
+            start_game(chosen_char);
         }
     }while(scelta!="YES" && scelta!="NO");
 }
