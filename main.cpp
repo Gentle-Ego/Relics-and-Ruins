@@ -31,7 +31,7 @@ void write_character_to_json(Character charac) {
     json character = {
         {"name", charac.name},
         {"race", charac.race},
-        {"sex", charac.sex},  // Convertire char a string per JSON
+        {"sex", charac.sex},
         {"coins", charac.coins},
         {"level", charac.level}
     };
@@ -59,7 +59,7 @@ void write_character_to_json(Character charac) {
 }
 
 // Funzione per convertire da JSON a oggetto Character
-Character fromJSONtoChar(json ch)
+Character fromJSONtoCharacter(json ch)
 {
     Character c(ch["name"], ch["race"], ch["sex"], ch["coins"], ch["level"]);
     return c;
@@ -67,7 +67,7 @@ Character fromJSONtoChar(json ch)
 
 void start_game(Character character)
 {
-
+    
 }
 
 void select_char(string scelta="")
@@ -101,7 +101,7 @@ void select_char(string scelta="")
                 cin >> char_name;
                 for (const auto& character : characters["characters"]){
                     if(character["name"]==char_name){
-                        Character chosen_char = fromJSONtoChar(character);
+                        Character chosen_char = fromJSONtoCharacter(character);
                         cout << "You selected: " << chosen_char.name << " (Level " << chosen_char.level << ")\n";
                         start_game(chosen_char);
                     }
@@ -116,7 +116,7 @@ void select_char(string scelta="")
         } else if(scelta=="YES") 
         {
             Character chosen_char;
-            string r="Human", s="M";
+            string r, s;
 
             cout << "Create your character:\nName: ";
             cin >> chosen_char.name;
@@ -143,6 +143,5 @@ void select_char(string scelta="")
 int main()
 {
     select_char();
-
     return 0;
 }
