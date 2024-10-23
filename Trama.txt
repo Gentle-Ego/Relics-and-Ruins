@@ -1,0 +1,9 @@
+Scopo:
+Uccidere tutti i boss del regno di Valoria. (droppano orb, non sono eliminabili)
+
+Main Character:
+Appena compiuti l'età per diventare un Hunter va alla Monsters Association della Capitale, chiamata Eràn, 
+trova NPC
+
+l'NPC che incontri si congratula con il personaggio e lo invita a riposarsi e, magari equipaggiarsi meglio
+al dormitorio del < > e al loro negozio, dopo di che dà il posto dove si trova il primo dungeon
