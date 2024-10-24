@@ -5,5 +5,7 @@ Main Character:
 Appena compiuti l'età per diventare un Hunter va alla Monsters Association della Capitale, chiamata Eràn, 
 trova NPC
 
-l'NPC che incontri si congratula con il personaggio e lo invita a riposarsi e, magari equipaggiarsi meglio
-al dormitorio del < > e al loro negozio, dopo di che dà il posto dove si trova il primo dungeon
+l'NPC ( che incontri si congratula con il personaggio per essere diventato un hunter di Vsloris e lo invita a riposarsi e, 
+al dormitorio del Golden Pidgeon e recarsi il giorno seguente ai vari negozi della Capitale per comprare il proprio equipaggiamento, 
+dopo di che gli mostrerà il sotterraneo della Monster Association, dove ci sono i vari Dungeons' Gates, accessibili
+in relazione al proprio grado in relazione ai dungeon sconfitti nel tempo 1->2->3->4...
