@@ -26,6 +26,14 @@ void clearScreen() {
     #endif
 }
 
+void slowCout(const std::string& text, int delay_ms = 50) {
+    for (char c : text) {
+        std::cout << c << std::flush;  // Print each character and flush to display immediately
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay_ms));  // Delay between characters
+    }
+    std::cout << std::endl;  // Optional: print a newline after the whole string
+}
+
 string findPosition(int x){
     switch(x){
         case -1:
@@ -224,10 +232,11 @@ void start_game(Character character)
     
     //Aspetta 5 secondi prima di iniziare il gioco
     this_thread::sleep_for(chrono::seconds(5));
+    clearScreen();
 
     //mettere il giocatore nel posto ultimo salvato, o iniziare con introduzione se current_dungeon == -1
     if(character.current_dungeon == -1){
-        cout << "" << endl;
+        slowCout(" __          ________ _      _____ ____  __  __ ______   _______ ____                 \n \\ \\        / /  ____| |    / ____/ __ \\|  \\/  |  ____| |__   __/ __ \\                \n  \\ \\  /\\  / /| |__  | |   | |   | |  | | \\  / | |__       | | | |  | |               \n   \\ \\/  \\/ / |  __| | |   | |   | |  | | |\\/| |  __|      | | | |  | |               \n    \\  /\\  /  | |____| |___| |___| |__| | |  | | |____     | | | |__| |               \n  ___\\/  \\/___|______|______\\_____\\____/|_|  |_|______|___ |_|  \\____/__ _   _  _____ \n |  __ \\|  ____| |    |_   _/ ____|/ ____|   ___    |  __ \\| |  | |_   _| \\ | |/ ____|\n | |__) | |__  | |      | || |    | (___    ( _ )   | |__) | |  | | | | |  \\| | (___  \n |  _  /|  __| | |      | || |     \\___ \\   / _ \\/\\ |  _  /| |  | | | | | . ` |\\___ \\ \n | | \\ \\| |____| |____ _| || |____ ____) | | (_>  < | | \\ \\| |__| |_| |_| |\\  |____) |\n |_|  \\_\\______|______|_____\\_____|_____/   \\___/\\/ |_|  \\_\\\\____/|_____|_| \\_|_____/ \n                                                                                      \n                                                                                      ", 10);
     } else if(character.current_dungeon == 0){
 
     } else {
@@ -251,8 +260,9 @@ void select_char()
                 char_file.close();
                 string char_name;
 
+                clearScreen();
                 // Stampo i vari personaggi chiedendo fra quali scegliere
-                cout << "\n\n-------------------\nSELECT YOUR CHARACTER!\n-------------------" << endl;
+                cout << "-------------------\nSELECT YOUR CHARACTER!\n-------------------" << endl;
                 for (const auto& character : characters["characters"]) {
                     cout << "Name: " << character["name"] << endl;
                     cout << "Race: " << character["race"] << endl;
@@ -263,11 +273,10 @@ void select_char()
                     cout << "-------------------" << endl;
                 }
 
-
-                cout << "\nWhat's the name of the choosen character?\n> ";
-                cin >> char_name;
                 bool x = true;
                 do{
+                cout << "\nWhat's the name of the choosen character?\n> ";
+                cin >> char_name;
                     for (const auto& character : characters["characters"]){
                         if(character["name"]==char_name){
                             Character chosen_char = fromJSONtoCharacter(character);
