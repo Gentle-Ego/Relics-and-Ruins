@@ -34,11 +34,12 @@ Griglia di vector<vector<int>> dungeonGrid con valori da 0 a x
 3 = Tipologia stanza 3
 ...
 x = Tipologia stanza x
-																													{{0, 0, 4, 2, 0, 3, 4, 0, 0, 0, 7},
-																													 {0, 2, 0, 3, 0, 0, 0,-2, 6, 0, 2},
-																													 {0, 0, 5, 4, 0, 3, 2, 0, 0, 8, 0},
-																						  					 						  		...							  
-																													 {0, 2, 0, 3, 1, 0, 0, 4, 0, 0, 0}}
+																						{{0, 0, 4, 2, 0, 3, 4, 0, 0, 0, 7},
+{0, 2, 0, 3, 0, 0, 0,-2, 6, 0, 2},
+{0, 0, 5, 4, 0, 3, 2, 0, 0, 8, 0},
+	  ...  
+{0, 2, 0, 3, 1, 0, 0, 4, 0, 0, 0}}
+
 Stanze boss sono valori negativi:
 -1 = stanza boss tip 1
 -2 = stanza boss tip 2
