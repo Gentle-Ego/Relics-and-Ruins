@@ -10,7 +10,7 @@ using namespace std;
 const vector<string> RACES={"Human", "Elf", "Dwarf", "Orc", "Halfling"};
 auto first = RACES.begin();
 auto last = RACES.end();
-const int START_COINS = 10;
+const int START_COINS = 100;
 const string SEX [2] = {"M", "F"};
 
 class Character
