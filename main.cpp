@@ -10,6 +10,13 @@
 using json = nlohmann::json;
 using namespace std;
 
+// Link Utili:
+/*
+https://tomeko.net/online_tools/cpp_text_escape.php?lang=en     Da Mega Text a stringa
+https://patorjk.com/software/taag/#p=display&f=Big&t=WELCOME%20TO%20%0A%0ARELICS%20%26%20RUINS      Per creare Mega Text
+https://github.com/Gentle-Ego/Relics-and-Ruins      GitHub per Update
+*/
+
 
 const vector<string> RACES={"Human", "Elf", "Dwarf", "Orc", "Halfling"};
 auto first = RACES.begin();
