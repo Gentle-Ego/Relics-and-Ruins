@@ -236,7 +236,7 @@ Character fromJSONtoCharacter(json ch) {
 
 void start_game(Character character)
 {
-    
+    string placeholder="";
     //Aspetta 5 secondi prima di iniziare il gioco
     this_thread::sleep_for(chrono::seconds(5));
     clearScreen();
@@ -244,6 +244,13 @@ void start_game(Character character)
     //mettere il giocatore nel posto ultimo salvato, o iniziare con introduzione se current_dungeon == -1
     if(character.current_dungeon == -1){
         slowCout(" __          ________ _      _____ ____  __  __ ______   _______ ____                 \n \\ \\        / /  ____| |    / ____/ __ \\|  \\/  |  ____| |__   __/ __ \\                \n  \\ \\  /\\  / /| |__  | |   | |   | |  | | \\  / | |__       | | | |  | |               \n   \\ \\/  \\/ / |  __| | |   | |   | |  | | |\\/| |  __|      | | | |  | |               \n    \\  /\\  /  | |____| |___| |___| |__| | |  | | |____     | | | |__| |               \n  ___\\/  \\/___|______|______\\_____\\____/|_|  |_|______|___ |_|  \\____/__ _   _  _____ \n |  __ \\|  ____| |    |_   _/ ____|/ ____|   ___    |  __ \\| |  | |_   _| \\ | |/ ____|\n | |__) | |__  | |      | || |    | (___    ( _ )   | |__) | |  | | | | |  \\| | (___  \n |  _  /|  __| | |      | || |     \\___ \\   / _ \\/\\ |  _  /| |  | | | | | . ` |\\___ \\ \n | | \\ \\| |____| |____ _| || |____ ____) | | (_>  < | | \\ \\| |__| |_| |_| |\\  |____) |\n |_|  \\_\\______|______|_____\\_____|_____/   \\___/\\/ |_|  \\_\\\\____/|_____|_| \\_|_____/ \n                                                                                      \n                                                                                      ", 2);
+
+        slowCout("It's a brisk morning, and the first rays of sunlight begin to warm the chilly air as you make your way to the association. The path is familiar, but today, every step feels heavier, charged with anticipation. After years of waiting, you're finally here, standing at the threshold, 18 and ready to join.\nThe building stands tall and welcoming, with the association's emblem proudly displayed by the entrance. You take a deep breath and step inside, feeling a strange mix of nerves and excitement. The reception area is bustling, with people chatting and moving about, each seemingly caught up in their own purpose. You feel an odd sense of belonging, this is where you've always wanted to be, and today, it's happening.\nApproaching the front desk there is a white haired old man waiting, you hand over your ID with a subtle grin, savoring the moment. The receptionist smiles knowingly, having seen this scene many times before, and says,\n\n \"Happy birthday! Excited to finally join?\"\n\nA rush of pride washes over you as you nod, and he gestures toward a set of double doors at the end of the hall.\nYou walk through, and the room beyond has an almost ceremonial feel. You see walls lined with framed photos of previous members, a legacy of sorts, and you feel a connection to the history, as though your name, too, will someday join those ranks, becoming a DUNGEONS CLEARER!\nThe official enrollment process is straightforward but significant: signing your name in the registry, filling out some final paperwork, and confirming your dedication to the association's values. When you finish, they hand you a membership badge with your name engraved on it, still warm from the print. It feels real, solid—an achievement.");
+        system("pause"); 
+        cout<<"\n\n";
+        character.inventory.push_back("Association Badge");
+
+        slowCout("");
     } else if(character.current_dungeon == 0){
 
     } else {
