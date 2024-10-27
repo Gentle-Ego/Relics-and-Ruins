@@ -1,12 +1,116 @@
 {
     "characters": [
-      {
-        "name": "Thorin",
-        "race": "Dwarf",
-        "sex": "M",
-        "coins": 100,
-        "level": 1
-      }
+        {
+            "coins": 100,
+            "critical": 0.1,
+            "current_dungeon": -1,
+            "current_food": 100,
+            "current_turn": 0,
+            "defense": 10,
+            "dexterity": 10,
+            "equipped": [],
+            "experience": 0,
+            "health": 100,
+            "inventory": [],
+            "level": 1,
+            "mana": 50,
+            "mana_regeneration": 1,
+            "max_food": 100,
+            "max_health": 100,
+            "max_mana": 50,
+            "name": "Legolas",
+            "pos_x": 0,
+            "pos_y": 0,
+            "race": "Elf",
+            "sex": "M",
+            "strength": 10
+        },
+        {
+            "coins": 100,
+            "critical": 0.1,
+            "current_dungeon": -1,
+            "current_food": 100,
+            "current_turn": 0,
+            "defense": 10,
+            "dexterity": 10,
+            "equipped": [],
+            "experience": 0,
+            "health": 100,
+            "inventory": [],
+            "level": 1,
+            "mana": 50,
+            "mana_regeneration": 1,
+            "max_food": 100,
+            "max_health": 100,
+            "max_mana": 50,
+            "name": "test",
+            "pos_x": 0,
+            "pos_y": 0,
+            "race": "Human",
+            "sex": "M",
+            "strength": 10
+        },
+        {
+            "coins": 100,
+            "critical": 0.1,
+            "current_dungeon": -1,
+            "current_food": 100,
+            "current_turn": 0,
+            "defense": 10,
+            "dexterity": 10,
+            "equipped": [],
+            "experience": 0,
+            "health": 100,
+            "inventory": [],
+            "level": 1,
+            "mana": 50,
+            "mana_regeneration": 1,
+            "max_food": 100,
+            "max_health": 100,
+            "max_mana": 50,
+            "name": "Seldon",
+            "pos_x": 0,
+            "pos_y": 0,
+            "race": "Orc",
+            "sex": "M",
+            "strength": 10
+        },
+        {
+            "coins": 97,
+            "critical": 0.1,
+            "current_dungeon": -1,
+            "current_food": 100,
+            "current_turn": 0,
+            "defense": 10,
+            "dexterity": 10,
+            "equipped": [],
+            "experience": 0,
+            "health": 100,
+            "inventory": [
+                {
+                    "name": "Association Badge",
+                    "type": "badge"
+                },
+                {
+                    "defense": 5,
+                    "level_required": 1,
+                    "name": "Cloth Tunic",
+                    "type": "light",
+                    "value": 3
+                }
+            ],
+            "level": 1,
+            "mana": 50,
+            "mana_regeneration": 1,
+            "max_food": 100,
+            "max_health": 100,
+            "max_mana": 50,
+            "name": "Gandalf",
+            "pos_x": 0,
+            "pos_y": 0,
+            "race": "Human",
+            "sex": "M",
+            "strength": 10
+        }
     ]
-  }
-  
+}
