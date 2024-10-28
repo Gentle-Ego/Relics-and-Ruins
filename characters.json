@@ -78,7 +78,7 @@
         {
             "coins": 97,
             "critical": 0.1,
-            "current_dungeon": -1,
+            "current_dungeon": -2,
             "current_food": 100,
             "current_turn": 0,
             "defense": 10,
