@@ -42,8 +42,12 @@ void slowCout(const string& text, int delay_ms = 40) {
 
 string findPosition(int x){
     switch(x){
+        case -3:
+            return "Monster Association";
+        case -2:
+            return "Shops Plaza";
         case -1:
-            return "Just Started";
+            return "Tutorial";
         case 0:
             return "Capital";
         case 1:
@@ -306,7 +310,9 @@ vector<json> loadShopItems(const string& filename, int lvl) {
 
 // Funzione per il negozio
 void shop(Character& character) {
+    character.current_dungeon = -2;
     string filename;
+    shop:
     clearScreen();
     slowCout("Welcome to the shops area! Choose a shop to visit:\n");
     slowCout("1. DragonForge Armory\n2. The Weapons of Valoria\n3. Potions\n4. Foods\n5. Everything's portion\n6. Utilities and Inutilities\n");
@@ -326,6 +332,7 @@ void shop(Character& character) {
 
     vector<json> items = loadShopItems(filename, character.level);
     clearScreen();
+    shopx:
 
     // Visualizza gli oggetti disponibili
     cout << "Available items at your current level:\n";
@@ -343,12 +350,17 @@ void shop(Character& character) {
         if (character.coins >= selectedItem["value"]) {
             character.coins -= int(selectedItem["value"]);
             character.addItem(selectedItem, character);
+            clearScreen();
             cout << "Purchased " << selectedItem["name"] << " for " << selectedItem["value"] << " coins!\n";
+            goto shopx;
         } else {
+            clearScreen();
             cout << "Not enough coins to buy " << selectedItem["name"] << ".\n";
+            goto shopx;
         }
     } else {
         cout << "Exiting shop.\n";
+        goto shop;
     }
 }
 
