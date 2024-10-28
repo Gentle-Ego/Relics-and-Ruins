@@ -327,7 +327,7 @@ void shop(Character& character) {
         case 4: filename = "potions.json"; break;
         case 5: filename = "usables.json"; break;
         case 6: filename = "utilities.json"; break;
-        default: cout << "Exiting shop.\n"; return;
+        default: cout << "Exiting shop.\n"; this_thread::sleep_for(chrono::seconds(4));; character.current_dungeon=0; main_menu(character); return;
     }
 
     vector<json> items = loadShopItems(filename, character.level);
@@ -372,7 +372,7 @@ void start_game(Character character)
 {
     string placeholder="";
     //Aspetta 5 secondi prima di iniziare il gioco
-    this_thread::sleep_for(chrono::seconds(5));
+    this_thread::sleep_for(chrono::seconds(4));
     clearScreen();
 
     //mettere il giocatore nel posto ultimo salvato, o iniziare con introduzione se current_dungeon == -1
@@ -426,7 +426,11 @@ void start_game(Character character)
         main_menu(character);
 
     } else if(character.current_dungeon == 0){
-
+        main_menu(character);
+    } else if(character.current_dungeon == -2){
+        shop(character);
+    } else if(character.current_dungeon == -3){
+        mha_menu(character);
     } else {
 
     }
