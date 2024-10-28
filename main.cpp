@@ -92,7 +92,7 @@ public:
     int experience;
     int current_turn; //solo dentro dungeon         
     //in caso di combattimenti si aggiornano solo a fine combattimento per sicurezza di salvataggio
-    int current_dungeon; //da 1 a (num dungeon) o 0 se capitale, -1 se si è all'inizio
+    int current_dungeon; //da 1 a (num dungeon) o 0 se capitale, -1 se si è all'inizio, -2 se Shop, -3 se MHA
     int pos_x;
     int pos_y;
 
