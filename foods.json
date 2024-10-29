@@ -2,6 +2,7 @@
     "foods": [
         {
             "name": "Apple",
+            "type": "food",
             "info": "basic",
             "level_required": 1,
             "hunger_recovery": 5,
@@ -9,6 +10,7 @@
         },
         {
             "name": "Bread Loaf",
+            "type": "food",
             "info": "basic",
             "level_required": 1,
             "hunger_recovery": 10,
@@ -16,6 +18,7 @@
         },
         {
             "name": "Steak",
+            "type": "food",
             "info": "basic",
             "level_required": 2,
             "hunger_recovery": 20,
@@ -23,6 +26,7 @@
         },
         {
             "name": "Fruit Salad",
+            "type": "food",
             "info": "basic",
             "level_required": 3,
             "hunger_recovery": 15,
@@ -30,6 +34,7 @@
         },
         {
             "name": "Bowl of Oats",
+            "type": "food",
             "info": "basic",
             "level_required": 4,
             "hunger_recovery": 25,
@@ -37,6 +42,7 @@
         },
         {
             "name": "Roasted Chicken",
+            "type": "food",
             "info": "basic",
             "level_required": 5,
             "hunger_recovery": 30,
@@ -44,6 +50,7 @@
         },
         {
             "name": "Magic Mushroom Soup",
+            "type": "food",
             "info": "mana",
             "level_required": 6,
             "hunger_recovery": 15,
@@ -52,6 +59,7 @@
         },
         {
             "name": "Herbal Stew",
+            "type": "food",
             "info": "heal",
             "level_required": 9,
             "hunger_recovery": 20,
@@ -60,6 +68,7 @@
         },
         {
             "name": "Phoenix Egg Omelet",
+            "type": "food",
             "info": "legendary",
             "level_required": 15,
             "hunger_recovery": 50,
