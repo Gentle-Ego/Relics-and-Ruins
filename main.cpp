@@ -96,7 +96,7 @@ public:
     int experience;
     int current_turn; //solo dentro dungeon         
     //in caso di combattimenti si aggiornano solo a fine combattimento per sicurezza di salvataggio
-    int current_place; //da 1 a (num dungeon) o 0 se capitale, -1 se si è all'inizio, -2 se Shop, -3 se MHA
+    int current_dungeon; //da 1 a (num dungeon) o 0 se capitale, -1 se si è all'inizio, -2 se Shop, -3 se MHA
     int pos_x;
     int pos_y;
 
@@ -119,7 +119,7 @@ public:
     Character(string n, string r, string s) 
         : name(n), race(r), sex(s), 
           coins(START_COINS), level(1), experience(0),
-          current_turn(0), current_place(-1), pos_x(0), pos_y(0),
+          current_turn(0), current_dungeon(-1), pos_x(0), pos_y(0),
           health(100), max_health(100),
           current_food(100), max_food(100),
           mana(50), max_mana(50), mana_regeneration(1),
@@ -209,7 +209,7 @@ public:
 
             // Posizione
             {"current_turn", charac.current_turn},
-            {"current_place", charac.current_place},
+            {"current_dungeon", charac.current_dungeon},
             {"pos_x", charac.pos_x},
             {"pos_y", charac.pos_y},
 
@@ -283,7 +283,7 @@ Character fromJSONtoCharacter(json ch) {
 
     // Posizione
     c.current_turn = ch["current_turn"];
-    c.current_place = ch["current_place"];
+    c.current_dungeon = ch["current_dungeon"];
     c.pos_x = ch["pos_x"];
     c.pos_y = ch["pos_y"];
 
@@ -333,7 +333,7 @@ vector<json> loadShopItems(const string& filename, int lvl) {
 
 // Funzione per il negozio
 void shop(Character& character) {
-    character.current_place = -2;
+    character.current_dungeon = -2;
     string filename, option;
     shop:
     clearScreen();
@@ -351,7 +351,7 @@ void shop(Character& character) {
         case 4: filename = "potions.json"; slowCout("Welcome to Feast & Famine\n"); break;
         case 5: filename = "usables.json"; slowCout("Welcome to Relics & Rarities\n"); break;
         case 6: filename = "utilities.json"; slowCout("Welcome to The Rusty Nail\n"); break;
-        default: cout << "Exiting shop.\n"; this_thread::sleep_for(chrono::seconds(4));; character.current_place=0; main_menu(character); return;
+        default: cout << "Exiting shop.\n"; this_thread::sleep_for(chrono::seconds(4));; character.current_dungeon=0; main_menu(character); return;
     }
 
 	do{
@@ -420,8 +420,8 @@ void start_game(Character character)
     this_thread::sleep_for(chrono::seconds(4));
     clearScreen();
 
-    //mettere il giocatore nel posto ultimo salvato, o iniziare con introduzione se current_place == -1
-    if(character.current_place == -1){
+    //mettere il giocatore nel posto ultimo salvato, o iniziare con introduzione se current_dungeon == -1
+    if(character.current_dungeon == -1){
         slowCout(" __          ________ _      _____ ____  __  __ ______   _______ ____                 \n \\ \\        / /  ____| |    / ____/ __ \\|  \\/  |  ____| |__   __/ __ \\                \n  \\ \\  /\\  / /| |__  | |   | |   | |  | | \\  / | |__       | | | |  | |               \n   \\ \\/  \\/ / |  __| | |   | |   | |  | | |\\/| |  __|      | | | |  | |               \n    \\  /\\  /  | |____| |___| |___| |__| | |  | | |____     | | | |__| |               \n  ___\\/  \\/___|______|______\\_____\\____/|_|  |_|______|___ |_|  \\____/__ _   _  _____ \n |  __ \\|  ____| |    |_   _/ ____|/ ____|   ___    |  __ \\| |  | |_   _| \\ | |/ ____|\n | |__) | |__  | |      | || |    | (___    ( _ )   | |__) | |  | | | | |  \\| | (___  \n |  _  /|  __| | |      | || |     \\___ \\   / _ \\/\\ |  _  /| |  | | | | | . ` |\\___ \\ \n | | \\ \\| |____| |____ _| || |____ ____) | | (_>  < | | \\ \\| |__| |_| |_| |\\  |____) |\n |_|  \\_\\______|______|_____\\_____|_____/   \\___/\\/ |_|  \\_\\\\____/|_____|_| \\_|_____/ \n                                                                                      \n                                                                                      ", 1);
 
         slowCout("\nIt's a brisk morning, and the first rays of sunlight begin to warm the chilly air as you make your way to the association. The path is familiar, but today, every step feels heavier, charged with anticipation. After years of waiting, you're finally here, standing at the threshold, 18 and ready to join.\nThe building stands tall and welcoming, with the association's emblem proudly displayed by the entrance. You take a deep breath and step inside, feeling a strange mix of nerves and excitement. The reception area is bustling, with people chatting and moving about, each seemingly caught up in their own purpose. You feel an odd sense of belonging, this is where you've always wanted to be, and today, it's happening.\nApproaching the front desk there is a red haired cute girl waiting, you hand over your ID with a subtle grin, savoring the moment. The receptionist smiles knowingly, having seen this scene many times before, and says,\n\n \"Happy birthday! Excited to finally join? My name's Rosie, and I'll be your guide through the new chapter of your life!\nFollow me, we have to finish some formal paper works, then I'll be honored to let you know in depth your job and how to do it well!\"\n\nA rush of pride washes over you as you nod, and she gestures toward a set of double doors at the end of the hall.\nYou walk through, and the room beyond has an almost ceremonial feel. You see walls lined with framed photos of previous members, a legacy of sorts, and you feel a connection to the history, as though your name, too, will someday join those ranks, becoming a DUNGEONS CLEARER!\nThe official enrollment process is straightforward but significant: signing your name in the registry, filling out some final paperwork, and confirming your dedication to the association's values. When you finish, Rosie hands you a membership badge with your name engraved on it, still warm from the print. It feels real, solid—an achievement.");
@@ -470,11 +470,11 @@ void start_game(Character character)
 
         main_menu(character);
 
-    } else if(character.current_place == 0){
+    } else if(character.current_dungeon == 0){
         main_menu(character);
-    } else if(character.current_place == -2){
+    } else if(character.current_dungeon == -2){
         shop(character);
-    } else if(character.current_place == -3){
+    } else if(character.current_dungeon == -3){
         mha_menu(character);
     } else {
 
@@ -506,7 +506,7 @@ void select_char()
                     cout << "Sex: " << character["sex"] << endl;
                     cout << "Coins: " << character["coins"] << endl;
                     cout << "Level: " << character["level"] << endl;
-                    cout << "Position: " << findPosition(character["current_place"]) << endl;
+                    cout << "Position: " << findPosition(character["current_dungeon"]) << endl;
                     cout << "___________________" << endl;
                 }
 
