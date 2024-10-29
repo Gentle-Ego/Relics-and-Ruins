@@ -2,7 +2,8 @@
     "utilities": [
         {
             "name": "Torch",
-            "type": "exploration",
+            "type": "utilitie",
+            "info": "exploration",
             "level_required": 1,
             "effect": "Lights up dark areas for better visibility",
             "duration": "10 minutes",
@@ -10,28 +11,32 @@
         },
         {
             "name": "Healing Herb",
-            "type": "healing",
+            "type": "utilitie",
+            "info": "healing",
             "level_required": 2,
             "effect": "Restores 15 health points",
             "value": 10
         },
         {
             "name": "Smoke Bomb",
-            "type": "stealth",
+            "type": "utilitie",
+            "info": "stealth",
             "level_required": 4,
             "effect": "Allows a quick escape from battle",
             "value": 20
         },
         {
             "name": "Rope & Hook",
-            "type": "exploration",
+            "type": "utilitie",
+            "info": "exploration",
             "level_required": 5,
             "effect": "Climbs walls or descends into deep pits",
             "value": 25
         },
         {
             "name": "Magical Compass",
-            "type": "exploration",
+            "type": "utilitie",
+            "info": "exploration",
             "level_required": 6,
             "effect": "Points towards treasure within the dungeon",
             "duration": "5 minutes",
@@ -39,7 +44,8 @@
         },
         {
             "name": "Invisibility Cloak",
-            "type": "stealth",
+            "type": "utilitie",
+            "info": "stealth",
             "level_required": 8,
             "effect": "Makes the character invisible to enemies",
             "duration": "3 minutes",
@@ -47,35 +53,40 @@
         },
         {
             "name": "Guardian Totem",
-            "type": "defense",
+            "type": "utilitie",
+            "info": "defense",
             "level_required": 20,
             "effect": "Reduces incoming damage by 10% for the next 10 attacks",
             "value": 130
         },
         {
             "name": "Portable Altar",
-            "type": "healing",
+            "type": "utilitie",
+            "info": "healing",
             "level_required": 22,
             "effect": "Heals all nearby allies for 50 health points",
             "value": 150
         },
         {
             "name": "Phantom Key",
-            "type": "exploration",
+            "type": "utilitie",
+            "info": "exploration",
             "level_required": 28,
             "effect": "Unlocks any door or chest in the dungeon",
             "value": 200
         },
         {
             "name": "Battle Horn",
-            "type": "buff",
+            "type": "utilitie",
+            "info": "buff",
             "level_required": 30,
             "effect": "Increases attack of all allies by 10% for 10 minutes",
             "value": 250
         },
         {
             "name": "Basic Pickaxe",
-            "type": "mining",
+            "type": "utilitie",
+            "info": "mining",
             "level_required": 1,
             "effect": "Allows the mining of simple ores in or outside the dungeon",
             "pickaxe_level": 1,
@@ -84,7 +95,8 @@
         },
         {
             "name": "Advanced Pickaxe",
-            "type": "mining",
+            "type": "utilitie",
+            "info": "mining",
             "level_required": 5,
             "effect": "Allows the mining of more advanced ores in or outside the dungeon",
             "pickaxe_level": 2,
@@ -93,7 +105,8 @@
         },
         {
             "name": "Reinforced Pickaxe",
-            "type": "mining",
+            "type": "utilitie",
+            "info": "mining",
             "level_required": 10,
             "effect": "Allows the mining of tough ores in or outside the dungeon",
             "pickaxe_level": 3,
@@ -102,7 +115,8 @@
         },
         {
             "name": "Master Pickaxe",
-            "type": "mining",
+            "type": "utilitie",
+            "info": "mining",
             "level_required": 15,
             "effect": "Allows the mining of the best ores in or outside the dungeon",
             "pickaxe_level": 4,
