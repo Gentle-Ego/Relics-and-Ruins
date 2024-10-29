@@ -2,35 +2,40 @@
     "weapons": [
         {
             "name": "Rusty Dagger",
-            "type": "dagger",
+            "type": "weapon",
+            "info": "dagger",
             "level_required": 1,
             "damage": 5,
             "value": 3
         },
         {
             "name": "Wooden Club",
-            "type": "club",
+            "type": "weapon",
+            "info": "club",
             "level_required": 1,
             "damage": 7,
             "value": 5
         },
         {
             "name": "Iron Sword",
-            "type": "sword",
+            "type": "weapon",
+            "info": "sword",
             "level_required": 2,
             "damage": 12,
             "value": 15
         },
         {
             "name": "Sharpened Spear",
-            "type": "spear",
+            "type": "weapon",
+            "info": "spear",
             "level_required": 3,
             "damage": 15,
             "value": 20
         },
         {
             "name": "Elven Longbow",
-            "type": "bow",
+            "type": "weapon",
+            "info": "bow",
             "level_required": 4,
             "damage": 18,
             "range_bonus": 5,
@@ -38,21 +43,24 @@
         },
         {
             "name": "Steel Axe",
-            "type": "axe",
+            "type": "weapon",
+            "info": "axe",
             "level_required": 5,
             "damage": 20,
             "value": 30
         },
         {
             "name": "Knight's Claymore",
-            "type": "sword",
+            "type": "weapon",
+            "info": "sword",
             "level_required": 6,
             "damage": 25,
             "value": 45
         },
         {
             "name": "Dwarven Warhammer",
-            "type": "hammer",
+            "type": "weapon",
+            "info": "hammer",
             "level_required": 7,
             "damage": 30,
             "strength_bonus": 2,
@@ -60,7 +68,8 @@
         },
         {
             "name": "Venomous Blade",
-            "type": "dagger",
+            "type": "weapon",
+            "info": "dagger",
             "level_required": 8,
             "damage": 18,
             "poison_damage": 5,
@@ -68,14 +77,16 @@
         },
         {
             "name": "Orcish Cleaver",
-            "type": "axe",
+            "type": "weapon",
+            "info": "axe",
             "level_required": 9,
             "damage": 35,
             "value": 75
         },
         {
             "name": "Mage's Staff",
-            "type": "staff",
+            "type": "weapon",
+            "info": "staff",
             "level_required": 10,
             "damage": 10,
             "mana_bonus": 20,
@@ -83,14 +94,16 @@
         },
         {
             "name": "Dragonbone Spear",
-            "type": "spear",
+            "type": "weapon",
+            "info": "spear",
             "level_required": 12,
             "damage": 40,
             "value": 100
         },
         {
             "name": "Enchanted Shortbow",
-            "type": "bow",
+            "type": "weapon",
+            "info": "bow",
             "level_required": 13,
             "damage": 35,
             "magic_damage": 5,
@@ -98,7 +111,8 @@
         },
         {
             "name": "Firebrand Blade",
-            "type": "sword",
+            "type": "weapon",
+            "info": "sword",
             "level_required": 14,
             "damage": 42,
             "fire_damage": 8,
@@ -106,7 +120,8 @@
         },
         {
             "name": "Frostbite Hammer",
-            "type": "hammer",
+            "type": "weapon",
+            "info": "hammer",
             "level_required": 15,
             "damage": 50,
             "frost_damage": 10,
@@ -114,7 +129,8 @@
         },
         {
             "name": "Assassin's Blade",
-            "type": "dagger",
+            "type": "weapon",
+            "info": "dagger",
             "level_required": 16,
             "damage": 28,
             "critical_chance": 15,
@@ -122,14 +138,16 @@
         },
         {
             "name": "Darksteel Scythe",
-            "type": "scythe",
+            "type": "weapon",
+            "info": "scythe",
             "level_required": 18,
             "damage": 60,
             "value": 180
         },
         {
             "name": "Stormcaller Staff",
-            "type": "staff",
+            "type": "weapon",
+            "info": "staff",
             "level_required": 20,
             "damage": 20,
             "lightning_damage": 15,
@@ -137,14 +155,16 @@
         },
         {
             "name": "Voidblade",
-            "type": "sword",
+            "type": "weapon",
+            "info": "sword",
             "level_required": 22,
             "damage": 65,
             "value": 230
         },
         {
             "name": "Soulrender Axe",
-            "type": "axe",
+            "type": "weapon",
+            "info": "axe",
             "level_required": 24,
             "damage": 70,
             "life_drain": 10,
@@ -152,7 +172,8 @@
         },
         {
             "name": "Moonlight Bow",
-            "type": "bow",
+            "type": "weapon",
+            "info": "bow",
             "level_required": 26,
             "damage": 60,
             "accuracy_bonus": 10,
@@ -160,14 +181,16 @@
         },
         {
             "name": "Celestial Halberd",
-            "type": "halberd",
+            "type": "weapon",
+            "info": "halberd",
             "level_required": 28,
             "damage": 75,
             "value": 300
         },
         {
             "name": "Phoenix Talon",
-            "type": "dagger",
+            "type": "weapon",
+            "info": "dagger",
             "level_required": 30,
             "damage": 50,
             "fire_damage": 15,
@@ -175,7 +198,8 @@
         },
         {
             "name": "Arcane Wand",
-            "type": "staff",
+            "type": "weapon",
+            "info": "staff",
             "level_required": 32,
             "damage": 30,
             "mana_regen": 5,
@@ -183,7 +207,8 @@
         },
         {
             "name": "Shadow Spear",
-            "type": "spear",
+            "type": "weapon",
+            "info": "spear",
             "level_required": 34,
             "damage": 80,
             "stealth_bonus": 10,
@@ -191,7 +216,8 @@
         },
         {
             "name": "Thundering Mace",
-            "type": "mace",
+            "type": "weapon",
+            "info": "mace",
             "level_required": 36,
             "damage": 85,
             "stun_chance": 20,
@@ -199,14 +225,16 @@
         },
         {
             "name": "Sword of the Ancients",
-            "type": "sword",
+            "type": "weapon",
+            "info": "sword",
             "level_required": 38,
             "damage": 90,
             "value": 450
         },
         {
             "name": "Eternal Edge",
-            "type": "sword",
+            "type": "weapon",
+            "info": "sword",
             "level_required": 40,
             "damage": 100,
             "holy_damage": 15,
@@ -214,7 +242,8 @@
         },
         {
             "name": "Inferno Blade",
-            "type": "sword",
+            "type": "weapon",
+            "info": "sword",
             "level_required": 42,
             "damage": 95,
             "fire_damage": 20,
@@ -222,14 +251,16 @@
         },
         {
             "name": "Hellfire Scythe",
-            "type": "scythe",
+            "type": "weapon",
+            "info": "scythe",
             "level_required": 44,
             "damage": 105,
             "value": 550
         },
         {
             "name": "Divine Crossbow",
-            "type": "crossbow",
+            "type": "weapon",
+            "info": "crossbow",
             "level_required": 46,
             "damage": 110,
             "holy_damage": 10,
@@ -237,7 +268,8 @@
         },
         {
             "name": "Thunderbolt Axe",
-            "type": "axe",
+            "type": "weapon",
+            "info": "axe",
             "level_required": 48,
             "damage": 115,
             "lightning_damage": 25,
@@ -245,7 +277,8 @@
         },
         {
             "name": "Blade of the Eclipse",
-            "type": "sword",
+            "type": "weapon",
+            "info": "sword",
             "level_required": 50,
             "damage": 120,
             "dark_damage": 15,
