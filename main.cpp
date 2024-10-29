@@ -173,6 +173,29 @@ public:
             });
     }
 
+	vector<json> findItemsType(const string& itemType){
+		vector<json> items;
+        string selection = itemType.substr(0, itemType.length() - 6);	// Togliere il .json e la s di multiple armors.json -> armor
+        for (const auto& item : inventory) {
+            // Controlla se l'oggetto ha un level_required minore o uguale al livello del giocatore
+            if (item.contains("type") && item["type"] == "selection") {
+                items.push_back(item);
+            }
+        }
+    	return items;
+	}
+
+	vector<json> findItemsName(const string& itemName){
+		vector<json> items;
+        for (const auto& item : inventory) {
+            // Controlla se l'oggetto ha un level_required minore o uguale al livello del giocatore
+            if (item.contains("name") && item["name"] == "itemName") {
+                items.push_back(item);
+            }
+        }
+    	return items;
+	}
+
     void write_character_to_json(Character& charac) {
         // Crea il JSON del personaggio con tutti i nuovi attributi
         json character = {
@@ -311,53 +334,75 @@ vector<json> loadShopItems(const string& filename, int lvl) {
 // Funzione per il negozio
 void shop(Character& character) {
     character.current_dungeon = -2;
-    string filename;
+    string filename, option;
     shop:
     clearScreen();
     slowCout("Welcome to the shops area! Choose a shop to visit:\n");
-    slowCout("1. DragonForge Armory\n2. The Weapons of Valoria\n3. Potions\n4. Foods\n5. Everything's portion\n6. Utilities and Inutilities\n");
+    slowCout("1. DragonForge Armory\n2. The Weapons of Valoria\n3. The Alchemist's Kiss\n4. Feast & Famine\n5. Relics & Rarities\n6. The Rusty Nail\n");
     cout << "\nSelect a number (or 'exit' to leave the shop): ";
     int choice;
     cin >> choice;
+	clearScreen();
 
     switch (choice) {
-        case 1: filename = "armors.json"; break;
-        case 2: filename = "weapons.json"; break;
-        case 3: filename = "foods.json"; break;
-        case 4: filename = "potions.json"; break;
-        case 5: filename = "usables.json"; break;
-        case 6: filename = "utilities.json"; break;
+        case 1: filename = "armors.json"; slowCout("Welcome to Dragon Forge\n"); break;
+        case 2: filename = "weapons.json"; slowCout("Welcome to The Weapons of Valoria\n"); break;
+        case 3: filename = "foods.json"; slowCout("Welcome to The Alchemist's Kiss\n"); break;
+        case 4: filename = "potions.json"; slowCout("Welcome to Feast & Famine\n"); break;
+        case 5: filename = "usables.json"; slowCout("Welcome to Relics & Rarities\n"); break;
+        case 6: filename = "utilities.json"; slowCout("Welcome to The Rusty Nail\n"); break;
         default: cout << "Exiting shop.\n"; this_thread::sleep_for(chrono::seconds(4));; character.current_dungeon=0; main_menu(character); return;
     }
 
-    vector<json> items = loadShopItems(filename, character.level);
-    clearScreen();
+	do{
+		slowCout("Would you like to Buy or Sell?\n");
+		cin >> option;
+	} while(option != "Buy" && option != "Sell");
     shopx:
 
-    // Visualizza gli oggetti disponibili
-    cout << "Available items at your current level:\n";
-    for (size_t i = 0; i < items.size(); ++i) {
-        cout << i + 1 << ". " << items[i]["name"] << " - " << items[i]["value"] << " coins\n";
-    }
+	if(option == "Buy"){
+		vector<json> items = loadShopItems(filename, character.level);
 
+    	// Visualizza gli oggetti disponibili da comprare
+	    cout << "Available items at your current level:\n";
+ 	    for (size_t i = 0; i < items.size(); ++i) {
+    	    cout << i + 1 << ". " << items[i]["name"] << " - " << items[i]["value"] << " coins\n";
+    	}
+	} else {
+		vector<json> items = character.findItemsType(filename);
+
+		// Visualizza gli oggetti disponibili da vendere
+	    cout << "Available items in your inventory, that can be sell in this shop:\n";
+ 	    for (size_t i = 0; i < items.size(); ++i) {
+    	    cout << i + 1 << ". " << items[i]["name"] << " - " << items[i]["value"] << " coins, selling price: " << item[i]["value"]*0.75 << "\n";	// Oggetto vendibile al .75 del valore
+    	}
+	}
     // Selezione e acquisto
     int itemChoice;
-    cout << "Enter the number of the item to buy (or 0 to exit): ";
+    cout << "Enter the number of the item to "<< option <<" (or 0 to exit): ";
     cin >> itemChoice;
 
     if (itemChoice > 0 && itemChoice <= items.size()) {
         json selectedItem = items[itemChoice - 1];
-        if (character.coins >= selectedItem["value"]) {
-            character.coins -= int(selectedItem["value"]);
-            character.addItem(selectedItem, character);
-            clearScreen();
-            cout << "Purchased " << selectedItem["name"] << " for " << selectedItem["value"] << " coins!\n";
-            goto shopx;
-        } else {
+		if(option == "Buy"){
+			if (character.coins >= selectedItem["value"]) {
+				character.coins -= int(selectedItem["value"]);
+        		character.addItem(selectedItem, character);
+				clearScreen();
+ 	            cout << "Purchased " << selectedItem["name"] << " for " << selectedItem["value"] << " coins!\n";
+   	            goto shopx;
+			} else {
             clearScreen();
             cout << "Not enough coins to buy " << selectedItem["name"] << ".\n";
             goto shopx;
-        }
+        	}
+		} else {
+			character.coins += int(selectedItem["value"])*0.75;
+       		character.removeItem(selectedItem["name"], character);
+			clearScreen();
+            cout << "Sold " << selectedItem["name"] << " for " << selectedItem["value"]*0.75 << " coins!\n";
+			goto shopx;
+		}
     } else {
         cout << "Exiting shop.\n";
         goto shop;
