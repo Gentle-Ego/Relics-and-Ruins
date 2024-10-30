@@ -37,7 +37,6 @@ void slowCout(const string& text, int delay_ms = 40) {
         cout << c << flush;  // Print each character and flush to display immediately
         this_thread::sleep_for(chrono::milliseconds(delay_ms));  // Delay between characters
     }
-    cout;  // Optional: print a newline after the whole string
 }
 
 string stringToLower(const string& str)
@@ -282,6 +281,8 @@ public:
 
 };
 
+void main_menu(Character character);
+
 // Funzione per convertire da JSON a oggetto Character
 Character fromJSONtoCharacter(json ch) {
     // Crea un nuovo personaggio con i dati base
@@ -371,9 +372,10 @@ void shop(Character& character) {
 		cin >> option;
 	} while(option != "Buy" && option != "Sell");
     shopx:
+    vector<json> items;
 
 	if(option == "Buy"){
-		vector<json> items = loadShopItems(filename, character.level);
+		items = loadShopItems(filename, character.level);
 
     	// Visualizza gli oggetti disponibili da comprare
 	    cout << "Available items at your current level:\n";
@@ -381,12 +383,12 @@ void shop(Character& character) {
     	    cout << i + 1 << ". " << items[i]["name"] << " - " << items[i]["value"] << " coins\n";
     	}
 	} else {
-		vector<json> items = character.findItemsType(filename);
+		items = character.findItemsType(filename);
 
 		// Visualizza gli oggetti disponibili da vendere
 	    cout << "Available items in your inventory, that can be sell in this shop:\n";
  	    for (size_t i = 0; i < items.size(); ++i) {
-    	    cout << i + 1 << ". " << items[i]["name"] << " - " << items[i]["value"] << " coins, selling price: " << item[i]["value"]*0.75 << "\n";	// Oggetto vendibile al .75 del valore
+    	    cout << i + 1 << ". " << items[i]["name"] << " - " << items[i]["value"] << " coins, selling price: " << double(items[i]["value"])*0.75 << "\n";	// Oggetto vendibile al .75 del valore
     	}
 	}
     // Selezione e acquisto
@@ -412,7 +414,7 @@ void shop(Character& character) {
 			character.coins += int(selectedItem["value"])*0.75;
        		character.removeItem(selectedItem["name"], character);
 			clearScreen();
-            cout << "Sold " << selectedItem["name"] << " for " << selectedItem["value"]*0.75 << " coins!\n";
+            cout << "Sold " << selectedItem["name"] << " for " << double(selectedItem["value"])*0.75 << " coins!\n";
 			goto shopx;
 		}
     } else {
@@ -422,7 +424,7 @@ void shop(Character& character) {
 }
 
 void main_menu(Character character){
-	character["current_dungeon"] = 0;
+	character.current_dungeon = 0;
 	clearScreen();
 	
 
@@ -445,7 +447,7 @@ void start_game(Character character)
 		}
 
         slowCout("\nIt's a brisk morning, and the first rays of sunlight begin to warm the chilly air as you make your way to the association. The path is familiar, but today, every step feels heavier, charged with anticipation. After years of waiting, you're finally here, standing at the threshold, 18 and ready to join.\nThe building stands tall and welcoming, with the association's emblem proudly displayed by the entrance. You take a deep breath and step inside, feeling a strange mix of nerves and excitement. The reception area is bustling, with people chatting and moving about, each seemingly caught up in their own purpose. You feel an odd sense of belonging, this is where you've always wanted to be, and today, it's happening.\nApproaching the front desk there is a red haired cute girl waiting, you hand over your ID with a subtle grin, savoring the moment. The receptionist smiles knowingly, having seen this scene many times before, and says,\n\n \"Happy birthday! Excited to finally join? My name's Rosie, and I'll be your guide through the new chapter of your life!\nFollow me, we have to finish some formal paper works, then I'll be honored to let you know in depth your job and how to do it well!\"\n\nA rush of pride washes over you as you nod, and she gestures toward a set of double doors at the end of the hall.\nYou walk through, and the room beyond has an almost ceremonial feel. You see walls lined with framed photos of previous members, a legacy of sorts, and you feel a connection to the history, as though your name, too, will someday join those ranks, becoming a DUNGEONS CLEARER!\nThe official enrollment process is straightforward but significant: signing your name in the registry, filling out some final paperwork, and confirming your dedication to the association's values. When you finish, Rosie hands you a membership badge with your name engraved on it, still warm from the print. It feels real, solid—an achievement.");
-        if(!character.hasItem("Association Badge"){
+        if(!character.hasItem("Association Badge")){
             character.addItem({{"type", "badge"}, {"name", "Association Badge"}}, character);}
         cout << "\n\nPress ENTER to continue...\n";
         cin.ignore();
@@ -495,7 +497,7 @@ void start_game(Character character)
     } else if(character.current_dungeon == -2){
         shop(character);
     } else if(character.current_dungeon == -3){
-        mha_menu(character);
+        // mha_menu(character);
     } else {
 
     }
