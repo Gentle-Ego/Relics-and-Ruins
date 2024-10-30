@@ -17,7 +17,7 @@ https://patorjk.com/software/taag/#p=display&f=Big&t=WELCOME%20TO%20%0A%0ARELICS
 https://github.com/Gentle-Ego/Relics-and-Ruins      GitHub per Update
 */
 
-const vector<string> RACES={"Human", "Elf", "Dwarf", "Orc", "Halfling"};
+const vector<string> RACES={"Human", "Elf", "Dwarf", "Orc", "Halfling", "Tiefling", "Gnome", "Goblin", "Kobold", "Hobbit"};
 auto first = RACES.begin();
 auto last = RACES.end();
 const int START_COINS = 100;
@@ -38,6 +38,18 @@ void slowCout(const string& text, int delay_ms = 40) {
         this_thread::sleep_for(chrono::milliseconds(delay_ms));  // Delay between characters
     }
     cout;  // Optional: print a newline after the whole string
+}
+
+string stringToLower(const string& str)
+{
+    string result = "";
+
+    for (char ch : str) {
+        // Convert each character to lowercase using tolower
+        result += tolower(ch);
+    }
+
+    return result;
 }
 
 string findPosition(int x){
@@ -410,12 +422,15 @@ void shop(Character& character) {
 }
 
 void main_menu(Character character){
+	character["current_dungeon"] = 0;
+	clearScreen();
+	
 
 }
 
 void start_game(Character character)
 {
-    string placeholder="";
+    string tutChoice;
     //Aspetta 5 secondi prima di iniziare il gioco
     this_thread::sleep_for(chrono::seconds(4));
     clearScreen();
@@ -423,6 +438,11 @@ void start_game(Character character)
     //mettere il giocatore nel posto ultimo salvato, o iniziare con introduzione se current_dungeon == -1
     if(character.current_dungeon == -1){
         slowCout(" __          ________ _      _____ ____  __  __ ______   _______ ____                 \n \\ \\        / /  ____| |    / ____/ __ \\|  \\/  |  ____| |__   __/ __ \\                \n  \\ \\  /\\  / /| |__  | |   | |   | |  | | \\  / | |__       | | | |  | |               \n   \\ \\/  \\/ / |  __| | |   | |   | |  | | |\\/| |  __|      | | | |  | |               \n    \\  /\\  /  | |____| |___| |___| |__| | |  | | |____     | | | |__| |               \n  ___\\/  \\/___|______|______\\_____\\____/|_|  |_|______|___ |_|  \\____/__ _   _  _____ \n |  __ \\|  ____| |    |_   _/ ____|/ ____|   ___    |  __ \\| |  | |_   _| \\ | |/ ____|\n | |__) | |__  | |      | || |    | (___    ( _ )   | |__) | |  | | | | |  \\| | (___  \n |  _  /|  __| | |      | || |     \\___ \\   / _ \\/\\ |  _  /| |  | | | | | . ` |\\___ \\ \n | | \\ \\| |____| |____ _| || |____ ____) | | (_>  < | | \\ \\| |__| |_| |_| |\\  |____) |\n |_|  \\_\\______|______|_____\\_____|_____/   \\___/\\/ |_|  \\_\\\\____/|_____|_| \\_|_____/ \n                                                                                      \n                                                                                      ", 1);
+		slowCout("Would you like to skip the tutorial?");
+		cin >> tutChoice;
+		if(stringToLower(tutChoice) == "yes"){
+			main_menu(character);
+		}
 
         slowCout("\nIt's a brisk morning, and the first rays of sunlight begin to warm the chilly air as you make your way to the association. The path is familiar, but today, every step feels heavier, charged with anticipation. After years of waiting, you're finally here, standing at the threshold, 18 and ready to join.\nThe building stands tall and welcoming, with the association's emblem proudly displayed by the entrance. You take a deep breath and step inside, feeling a strange mix of nerves and excitement. The reception area is bustling, with people chatting and moving about, each seemingly caught up in their own purpose. You feel an odd sense of belonging, this is where you've always wanted to be, and today, it's happening.\nApproaching the front desk there is a red haired cute girl waiting, you hand over your ID with a subtle grin, savoring the moment. The receptionist smiles knowingly, having seen this scene many times before, and says,\n\n \"Happy birthday! Excited to finally join? My name's Rosie, and I'll be your guide through the new chapter of your life!\nFollow me, we have to finish some formal paper works, then I'll be honored to let you know in depth your job and how to do it well!\"\n\nA rush of pride washes over you as you nod, and she gestures toward a set of double doors at the end of the hall.\nYou walk through, and the room beyond has an almost ceremonial feel. You see walls lined with framed photos of previous members, a legacy of sorts, and you feel a connection to the history, as though your name, too, will someday join those ranks, becoming a DUNGEONS CLEARER!\nThe official enrollment process is straightforward but significant: signing your name in the registry, filling out some final paperwork, and confirming your dedication to the association's values. When you finish, Rosie hands you a membership badge with your name engraved on it, still warm from the print. It feels real, solid—an achievement.");
         if(!character.hasItem("Association Badge"){
@@ -487,7 +507,7 @@ void select_char()
     do{
         cout << "Do you want to start from scratch? (YES or NO)" << endl;
         cin >> scelta;
-        if(scelta=="NO")
+        if(stringToLower(scelta)=="no")
         {
             json characters;
             ifstream char_file("characters.json");
@@ -531,7 +551,7 @@ void select_char()
                 cout << "No characters found. Please start a new game." << endl;
                 select_char();
             }
-        } else if(scelta=="YES") 
+        } else if(stringToLower(scelta)=="yes") 
         {
             string n, r, s;
 
@@ -539,7 +559,7 @@ void select_char()
             cin >> n;
 
             do{
-                cout << "Race (select from Human, Elf, Dwarf, Orc, Halfling): ";
+                cout << "Race (select from Human, Elf, Dwarf, Orc, Halfling, Tiefling, Gnome, Goblin, Kobold, Hobbit): ";
                 cin >> r;
             }while(find(first, last, r)==RACES.end());
 
