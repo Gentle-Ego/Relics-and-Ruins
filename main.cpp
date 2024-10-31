@@ -115,6 +115,7 @@ public:
   string name, race, sex, difficulty;
   int coins, level;
   int coins_spent, tot_kills, deaths, tot_money_acquired; // for leaderboards
+  int dunKills, dunDeaths, dunTurns; // for each dungeon leaderboard
   int experience;
   int current_turn; // solo dentro dungeon
   // in caso di combattimenti si aggiornano solo a fine combattimento per
@@ -145,7 +146,8 @@ public:
         current_turn(0), current_dungeon(-1), pos_x(0), pos_y(0), health(100),
         max_health(100), current_food(100), max_food(100), mana(50),
         max_mana(50), mana_regeneration(1), strength(10), defense(10),
-        dexterity(10), critical(0.1), coins_spent(0), tot_kills(0), deaths(0), tot_money_acquired(START_COINS) {}
+        dexterity(10), critical(0.1), coins_spent(0), tot_kills(0), deaths(0),
+        tot_money_acquired(START_COINS), dunKills(0), dunDeaths(0), dunTurns(0) {}
 
   // Aggiungi un singolo oggetto
   void addItem(const json &item, Character &character) {
