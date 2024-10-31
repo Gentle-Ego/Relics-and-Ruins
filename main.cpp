@@ -64,7 +64,7 @@ string stringToLower(const string &str) {
 string findPosition(int x) {
   switch (x) {
   case -3:
-    return "Monster Association";
+    return "Monster Hunter Association";
   case -2:
     return "Shops Plaza";
   case -1:
@@ -316,7 +316,7 @@ public:
   }
 };
 
-void main_menu(Character character);
+void main_menu(Character character);    // Dichiarazione funzione main_menu
 
 // Funzione per convertire da JSON a oggetto Character
 Character fromJSONtoCharacter(json ch) {
@@ -494,10 +494,29 @@ shopx:
 void mha_menu(Character character) {
   clearScreen();
   character.current_dungeon = -3;
+  slowCout("You are now in the Monster Hunter Association.\n");
+  slowCout("What would you like to do?\n");
+  slowCout("1. Go to the Dungeons\n");
+  slowCout("2. Go to the Quests Board\n");
+  slowCout("3. Talk to Rosie\n");
+  slowCout("4. Exit the Association\n");
+  cout << "\n> ";
+  int choice;
+  cin >> choice;
+  switch (choice) {
+  case 1:
+    // dungeonsMenu(character);
+  case 2:
+    // questsMenu(character);
+    case 3:
+    // rosie(character);
+    case 4:
+      main_menu(character);
+  }
 }
 
 void main_menu(Character character) {
-  clearScren();
+  clearScreen();
   character.current_dungeon = 0;
   slowCout("You are now in the main part of the capital city of Valoria.\n");
   slowCout("What would you like to do?\n");
@@ -505,7 +524,7 @@ void main_menu(Character character) {
   slowCout("2. Go to the Monster Hunter Association\n");
   slowCout("3. Check your profile\n");
   slowCout("4. Check the leaderboard\n");
-  cout << "> ";
+  cout << "\n> ";
   int choice;
   cin >> choice;
   switch (choice) {
