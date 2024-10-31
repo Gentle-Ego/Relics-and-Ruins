@@ -1,31 +1,15 @@
 {
     "leaderboards": {
         "Thorin": {
-            "Easy": {
-                "dungeons": {
-                    "Dungeon1": {
-                        "turns_to_complete": 50,
-                        "kill_death_ratio": 1
-                    },
-                    "Dungeon2": {
-                        "turns_to_complete": 40,
-                        "kill_death_ratio": 0.4
-                    }
-                },
-                "total_game": {
-                    "turns": 110,
-                    "coins_spent": 400,
-                    "kill_death_ratio": 1.6,
-                    "max_kills": 75,
-                    "total_money_acquired": 650,
-                    "highest_level_reached": 5
-                }
-            },
             "Medium": {
                 "dungeons": {
                     "Dungeon1": {
                         "turns_to_complete": 70,
                         "kill_death_ratio": 1.2
+                    },
+                    "Dungeon2": {
+                        "turns_to_complete": 40,
+                        "kill_death_ratio": 0.4
                     }
                 },
                 "total_game": {

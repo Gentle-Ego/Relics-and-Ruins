@@ -6,6 +6,7 @@
             "sex": "M",
             "coins": 150,
             "level": 5,
+            "difficulty": "Medium",
 
             "health": 100,
             "max_health": 120,

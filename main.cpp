@@ -22,8 +22,13 @@ per Update
 const vector<string> RACES = {"Human",    "Elf",      "Dwarf", "Orc",
                               "Halfling", "Tiefling", "Gnome", "Goblin",
                               "Kobold",   "Hobbit"};
-auto first = RACES.begin();
-auto last = RACES.end();
+auto racesFirst = RACES.begin();
+auto racesLast = RACES.end();
+
+const vector<string> DIFFICULTIES = {"Easy", "Normal", "Hard", "Extreme"};
+auto difficultiesFirst = DIFFICULTIES.begin();
+auto difficultiesLast = DIFFICULTIES.end();
+
 const int START_COINS = 100;
 const string SEX[2] = {"M", "F"};
 
@@ -42,7 +47,7 @@ void slowCout(const string &text, int delay_ms = 40) {
     this_thread::sleep_for(
         chrono::milliseconds(delay_ms)); // Delay between characters
   }
-  cout << endl; // Print a newline after the text is done
+  // cout << endl; // Print a newline after the text is done
 }
 
 string stringToLower(const string &str) {
@@ -107,7 +112,7 @@ static int calculateLevel(int experience) {
 class Character {
 public:
   // Stats base
-  string name, race, sex;
+  string name, race, sex, difficulty;
   int coins, level;
   int experience;
   int current_turn; // solo dentro dungeon
@@ -134,8 +139,8 @@ public:
   vector<json> inventory;
   vector<json> equipped;
 
-  Character(string n, string r, string s)
-      : name(n), race(r), sex(s), coins(START_COINS), level(1), experience(0),
+  Character(string n, string r, string s, string d)
+      : name(n), race(r), sex(s), difficulty(d), coins(START_COINS), level(1), experience(0),
         current_turn(0), current_dungeon(-1), pos_x(0), pos_y(0), health(100),
         max_health(100), current_food(100), max_food(100), mana(50),
         max_mana(50), mana_regeneration(1), strength(10), defense(10),
@@ -220,6 +225,7 @@ public:
         {"name", charac.name},
         {"race", charac.race},
         {"sex", charac.sex},
+        {"difficulty", charac.difficulty},
         {"coins", charac.coins},
         {"level", charac.level},
         {"experience", charac.experience},
@@ -291,7 +297,7 @@ void main_menu(Character character);
 // Funzione per convertire da JSON a oggetto Character
 Character fromJSONtoCharacter(json ch) {
   // Crea un nuovo personaggio con i dati base
-  Character c(ch["name"], ch["race"], ch["sex"]);
+  Character c(ch["name"], ch["race"], ch["sex"], ch["difficulty"]);
 
   // Aggiorna tutti gli altri attributi
   // Stats base
@@ -716,7 +722,7 @@ void select_char() {
         select_char();
       }
     } else if (stringToLower(scelta) == "yes") {
-      string n, r, s;
+      string n, r, s, d;
 
       cout << "Create your character:\nName: ";
       cin >> n;
@@ -725,14 +731,19 @@ void select_char() {
         cout << "Race (select from Human, Elf, Dwarf, Orc, Halfling, Tiefling, "
                 "Gnome, Goblin, Kobold, Hobbit): ";
         cin >> r;
-      } while (find(first, last, r) == RACES.end());
+      } while (find(racesFirst, racesLast, r) == RACES.end());
 
       do {
         cout << "Sex (insert M or F): ";
         cin >> s;
       } while (s != "M" && s != "F");
 
-      Character chosen_char(n, r, s);
+      do {
+        cout << "Choose your difficulty:\n• Easy\n• Normal\n• Hard\n• Extreme";
+        cin >> d;
+      } while (find(difficultiesFirst, difficultiesLast, d) == DIFFICULTIES.end());
+
+      Character chosen_char(n, r, s, d);
 
       clearScreen();
       cout << "You created: " << chosen_char.name << " (Level "
