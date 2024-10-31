@@ -114,8 +114,10 @@ public:
   // Stats base
   string name, race, sex, difficulty;
   int coins, level;
+
   int coins_spent, tot_kills, deaths, tot_money_acquired; // for leaderboards
   int dunKills, dunDeaths, dunTurns; // for each dungeon leaderboard
+
   int experience;
   int current_turn; // solo dentro dungeon
   // in caso di combattimenti si aggiornano solo a fine combattimento per
@@ -171,12 +173,12 @@ public:
         if (it->contains("count")) {
             (*it)["count"] += 1;  // it->at("count") è un altro modo al posto di (*it)["count"] non è un puntatore, ma iteratore
         } else {
-            (*it)["count"] = item.value("count", 1);  // se "count" non esiste, usa 1 come default
+            (*it)["count"] = 1;  // se "count" non esiste, usa 1 come default
         }   // cosa importante, (*it)["count"] crea "count" nel caso non esista, in questo caso non importa poichè è controllato per sicurezza
     } else { // Se l'oggetto non esiste, aggiungilo con il suo 'count'
         json newItem = item;
         if (!newItem.contains("count")) {
-            newItem["count"] = 1; // Imposta 'count' a 1 se non è presente
+            newItem["count"] = 1; // Iniializza 'count' a 1 se non è presente
         }
         inventory.push_back(newItem);
     }
