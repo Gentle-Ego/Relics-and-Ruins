@@ -149,12 +149,38 @@ public:
         dexterity(10), critical(0.1), coins_spent(0), tot_kills(0), deaths(0),
         tot_money_acquired(START_COINS), dunKills(0), dunDeaths(0), dunTurns(0) {}
 
+
+  // Controlla se l'oggetto esiste
+  bool hasItem(const string &itemName) const {
+    return any_of(
+        inventory.begin(), inventory.end(),
+        [&itemName](const json &item) { return item["name"] == itemName; });
+  }
+
   // Aggiungi un singolo oggetto
   void addItem(const json &item, Character &character) {
-    if (!item.contains("type") || !item.contains("name")) {
-      throw invalid_argument("Item must contain 'type' and 'name' fields");
+    if (!item.contains("name")) {
+        throw invalid_argument("Item must contain 'name' field");
     }
-    inventory.push_back(item);
+
+    auto it = find_if(inventory.begin(), inventory.end(),
+                      [&item](const json &invItem) { return invItem["name"] == item["name"]; });
+              // potevo benissimo usare hasItem, ma volevo testare una cosa eheh...
+
+    if (it != inventory.end()) { // Se l'oggetto esiste già
+        if (it->contains("count")) {
+            (*it)["count"] += 1;  // it->at("count") è un altro modo al posto di (*it)["count"] non è un puntatore, ma iteratore
+        } else {
+            (*it)["count"] = item.value("count", 1);  // se "count" non esiste, usa 1 come default
+        }   // cosa importante, (*it)["count"] crea "count" nel caso non esista, in questo caso non importa poichè è controllato per sicurezza
+    } else { // Se l'oggetto non esiste, aggiungilo con il suo 'count'
+        json newItem = item;
+        if (!newItem.contains("count")) {
+            newItem["count"] = 1; // Imposta 'count' a 1 se non è presente
+        }
+        inventory.push_back(newItem);
+    }
+
     write_character_to_json(character);
   }
 
@@ -178,13 +204,6 @@ public:
       return true;
     }
     return false;
-  }
-
-  // Controlla se l'oggetto esiste
-  bool hasItem(const string &itemName) const {
-    return any_of(
-        inventory.begin(), inventory.end(),
-        [&itemName](const json &item) { return item["name"] == itemName; });
   }
 
   // Trova numero di stesso oggetto
@@ -531,7 +550,9 @@ void start_game(Character character) {
     slowCout("\nWould you like to skip the tutorial?\n> ");
     cin >> tutChoice;
     if (stringToLower(tutChoice) == "yes") {
-      main_menu(character);
+      character.current_dungeon = 0;
+      start_game(character);
+      return;
     }
 
     slowCout(
@@ -542,7 +563,7 @@ void start_game(Character character) {
         "at the threshold, 18 and ready to join.\nThe building stands tall and "
         "welcoming, with the association's emblem proudly displayed by the "
         "entrance. You take a deep breath and step inside, feeling a strange "
-        "mix of nerves and excitement. The reception area is bustling, with "
+        "mix of nerves and excitement. \nThe reception area is bustling, with "
         "people chatting and moving about, each seemingly caught up in their "
         "own purpose. You feel an odd sense of belonging, this is where you've "
         "always wanted to be, and today, it's happening.\nApproaching the "
@@ -561,7 +582,7 @@ void start_game(Character character) {
         "join those ranks, becoming a DUNGEONS CLEARER!\nThe official "
         "enrollment process is straightforward but significant: signing your "
         "name in the registry, filling out some final paperwork, and "
-        "confirming your dedication to the association's values. When you "
+        "confirming your dedication to the association's values. \nWhen you "
         "finish, Rosie hands you a membership badge with your name engraved on "
         "it, still warm from the print. It feels real, solid—an achievement.");
     if (!character.hasItem("Association Badge")) {
@@ -576,7 +597,7 @@ void start_game(Character character) {
         "Rosie:\n\"Well, welcome to the Association " + character.name +
         "!\nNow let me introduce you to the association, as you may know, your "
         "objective is to clear the dungeons that are in the basement, do not "
-        "worry I'll show you them as soon as we can. To clear those dungeons "
+        "worry I'll show you them as soon as we can. \nTo clear those dungeons "
         "you'll need to defeat the Dungeon's keeper, you may see it like a "
         "boss of the dungeon, they are very strong creatures able to destroy "
         "one's career in a matter of seconds.\nDo not worry, the other "
