@@ -497,6 +497,7 @@ void mha_menu(Character character) {
 }
 
 void main_menu(Character character) {
+  clearScren();
   character.current_dungeon = 0;
   slowCout("You are now in the main part of the capital city of Valoria.\n");
   slowCout("What would you like to do?\n");
