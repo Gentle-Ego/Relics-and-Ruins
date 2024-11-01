@@ -900,6 +900,7 @@ string selectDungeonParam() {
 }
 
 void displayTotalLeaderboard(const json& leaderboards_data, const string& difficulty, const string& param) {
+  clearScreen();
   vector<pair<string, int>> leaderboard;
 
   // Estrai i dati dal JSON
@@ -922,6 +923,7 @@ void displayTotalLeaderboard(const json& leaderboards_data, const string& diffic
 }
 
 void displayDungeonLeaderboard(const json& leaderboards_data, const string& difficulty, const string& dungeon, const string& param) {
+  clearScreen();
   vector<pair<string, double>> leaderboard;
 
   // Estrai i dati dal JSON
@@ -947,6 +949,7 @@ void displayDungeonLeaderboard(const json& leaderboards_data, const string& diff
 }
 
 void leaderboards_menu(const json& leaderboards_data) {
+  clearScreen();
   // Step 1: Seleziona difficoltà
   string difficulty = selectDifficulty();
 
