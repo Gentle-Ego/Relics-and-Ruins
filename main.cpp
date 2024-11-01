@@ -815,6 +815,7 @@ void select_char() {
 
 
 string selectDifficulty() {
+  clearScreen();
   slowCout("This is the Hall of Fame, here you will find many leaderboards regarding various statistics of all of the saved characters."
            "\n\nPlease select the difficulty of the desired leaderboards series:\n");
   slowCout("1. Easy\n");
@@ -837,10 +838,10 @@ string selectDifficulty() {
 }
 
 string selectLeaderboardType() {
-  slowCout("Select leaderboard type:\n");
+  clearScreen();
+  slowCout("Please select leaderboard type:\n");
   slowCout("1. Total Game\n");
   slowCout("2. Dungeons\n");
-  cout << "\n> ";
   int choice;
   do{
     cout << "\nSelect a number > ";
@@ -851,7 +852,8 @@ string selectLeaderboardType() {
 }
 
 string selectTotalParam() {
-  slowCout("Select parameter:\n");
+  clearScreen();
+  slowCout("Please select parameter:\n");
   slowCout("1. Turns\n");
   slowCout("2. Coins Spent\n");
   slowCout("3. Kill-Death Ratio\n");
@@ -876,17 +878,18 @@ string selectTotalParam() {
 }
 
 string selectDungeon() {
-  slowCout("Enter the name of the dungeon (e.g., Dungeon1, Dungeon2): ");
+  clearScreen();
+  slowCout("Please enter the name of the dungeon (e.g., Dungeon1, Dungeon2): ");
   string dungeon;
   cin >> dungeon;
   return dungeon;
 }
 
 string selectDungeonParam() {
-  slowCout("Select dungeon parameter:\n");
+  clearScreen();
+  slowCout("Please select the dungeon parameter:\n");
   slowCout("1. Turns to Complete\n");
   slowCout("2. Kill-Death Ratio\n");
-  cout << "\n> ";
   int choice;
   do{
     cout << "\nSelect a number > ";
