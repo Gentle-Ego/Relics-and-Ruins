@@ -358,6 +358,207 @@ Character fromJSONtoCharacter(json ch) {
   return c;
 }
 
+
+string selectDifficulty() {
+  slowCout("This is the Hall of Fame, here you will find many leaderboards regarding various statistics of all of the saved characters."
+           "\n\nPlease select the difficulty of the desired leaderboards series:\n");
+  slowCout("1. Easy\n");
+  slowCout("2. Normal\n");
+  slowCout("3. Hard\n");
+  slowCout("4. Extreme\n");
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>4 || choice<1);
+
+  switch (choice) {
+      case 1: return "Easy";
+      case 2: return "Normal";
+      case 3: return "Hard";
+      case 4: return "Extreme";
+  }
+  return "Easy"; // Fallback in caso di errore.
+}
+
+string selectLeaderboardType() {
+  slowCout("Select leaderboard type:\n");
+  slowCout("1. Total Game\n");
+  slowCout("2. Dungeons\n");
+  cout << "\n> ";
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>2 || choice<1);
+
+  return (choice == 1) ? "total_game" : "dungeons";
+}
+
+string selectTotalParam() {
+  slowCout("Select parameter:\n");
+  slowCout("1. Turns\n");
+  slowCout("2. Coins Spent\n");
+  slowCout("3. Kill-Death Ratio\n");
+  slowCout("4. Total Kills\n");
+  slowCout("5. Total Money Acquired\n");
+  slowCout("6. Level\n");
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>6 || choice<1);
+
+  switch (choice) {
+      case 1: return "turns";
+      case 2: return "coins_spent";
+      case 3: return "kill_death_ratio";
+      case 4: return "tot_kills";
+      case 5: return "tot_money_acquired";
+      case 6: return "level";
+  }
+  return "turns"; // Fallback.
+}
+
+string selectDungeon() {
+  slowCout("Enter the name of the dungeon (e.g., Dungeon1, Dungeon2): ");
+  slowCout("1. Dungeon1\n");
+  slowCout("2. Dungeon2\n");
+  slowCout("3. Dungeon3\n");
+  slowCout("4. Dungeon4\n");
+  slowCout("5. Dungeon5\n");
+  slowCout("6. Dungeon6\n");
+  slowCout("7. Dungeon7\n");
+  slowCout("8. Dungeon8\n");
+  slowCout("9. Dungeon9\n");
+  slowCout("10. Dungeon10\n");
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>6 || choice<1);
+
+  switch (choice) {
+      case 1: return "Dungeon1";
+      case 2: return "Dungeon2";
+      case 3: return "Dungeon3";
+      case 4: return "Dungeon4";
+      case 5: return "Dungeon5";
+      case 6: return "Dungeon6";
+      case 7: return "Dungeon7";
+      case 8: return "Dungeon8";
+      case 9: return "Dungeon9";
+      case 10: return "Dungeon10";
+  }
+
+  return "Dungeon1";  // Fallback in caso di errore
+}
+
+string selectDungeonParam() {
+  slowCout("Select dungeon parameter:\n");
+  slowCout("1. Turns to Complete\n");
+  slowCout("2. Kill-Death Ratio\n");
+  cout << "\n> ";
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>2 || choice<1);
+
+  return (choice == 1) ? "turns_to_complete" : "kill_death_ratio";
+}
+
+void displayTotalLeaderboard(const json& leaderboards_data, const string& difficulty, const string& param) {
+  vector<pair<string, int>> leaderboard;
+
+  // Estrai i dati dal JSON
+  for (const auto& [character, character_data] : leaderboards_data["leaderboards"].items()) {
+      if (character_data.contains(difficulty) && character_data[difficulty].contains("total_game")) {
+          int value = character_data[difficulty]["total_game"][param].get<int>();
+          leaderboard.push_back({character, value});
+      }
+  }
+
+  // Ordina in ordine decrescente
+  sort(leaderboard.begin(), leaderboard.end(),
+            [](const auto& lhs, const auto& rhs) { return lhs.second > rhs.second; });
+
+  // Mostra i risultati
+  slowCout("\nTotal Leaderboard for parameter: " + param + " (Difficulty: " + difficulty + ")\n");
+  for (const auto& [character, value] : leaderboard) {
+      slowCout(character + ": " + to_string(value) + "\n");
+  }
+}
+
+void displayDungeonLeaderboard(const json& leaderboards_data, const string& difficulty, const string& dungeon, const string& param) {
+  vector<pair<string, double>> leaderboard;
+
+  // Estrai i dati dal JSON
+  for (const auto& [character, character_data] : leaderboards_data["leaderboards"].items()) {
+      if (character_data.contains(difficulty) && character_data[difficulty].contains("dungeons") && character_data[difficulty]["dungeons"].contains(dungeon)) {
+          double value = character_data[difficulty]["dungeons"][dungeon][param].get<double>();
+          leaderboard.push_back({character, value});
+      }
+  }
+
+  // Ordina in base alla metrica specificata (crescente o decrescente)
+  bool descending = (param == "kill_death_ratio"); // Solo kill_death_ratio è in ordine decrescente
+  sort(leaderboard.begin(), leaderboard.end(),
+            [descending](const auto& lhs, const auto& rhs) {
+                return descending ? lhs.second > rhs.second : lhs.second < rhs.second;
+            });
+
+  // Mostra i risultati
+  slowCout("\nDungeon Leaderboard: " + dungeon + ", parameter: " + param + " (Difficulty: " + difficulty + ")\n");
+  for (const auto& [character, value] : leaderboard) {
+      slowCout(character + ": " + to_string(value) + "\n");
+  }
+}
+
+void leaderboards_menu(const json& leaderboards_data) {
+  // Step 1: Seleziona difficoltà
+  string difficulty = selectDifficulty();
+
+  // Step 2: Scegli il tipo di leaderboard (totale o per dungeon)
+  string leaderboard_type = selectLeaderboardType();
+
+  if (leaderboard_type == "total_game") {
+      // Step 3a: Leaderboard Totale - seleziona tipo di parametro
+      string total_param = selectTotalParam();
+
+      // Mostra leaderboard totale basata sul parametro scelto
+      displayTotalLeaderboard(leaderboards_data, difficulty, total_param);
+  } else if (leaderboard_type == "dungeons") {
+      // Step 3b: Leaderboard per Dungeon - selezione Dungeon
+      string dungeon = selectDungeon();
+
+      // Step 4: Seleziona parametro specifico del dungeon
+      string dungeon_param = selectDungeonParam();
+
+      // Mostra leaderboard per il dungeon selezionato e parametro
+      displayDungeonLeaderboard(leaderboards_data, difficulty, dungeon, dungeon_param);
+  }
+
+  cout << "\n\nPress ENTER to leave the leaderboards...\n";
+  cin.ignore();
+  return;
+}
+
+/*json leaderboards_data = load_leaderboards_data("ideal_leads.json");
+  leaderboards_menu(leaderboards_data);*/
+
+json load_leaderboards_data(const string& file_path) {
+  ifstream file(file_path);
+  if (!file.is_open()) {
+      cerr << "Error opening file: " << file_path << endl;
+      exit(1);
+  }
+  json data;
+  file >> data;
+  return data;
+}
+
+
 // Funzione per leggere il file JSON del negozio e visualizzare gli oggetti con
 // livello appropriato
 vector<json> loadShopItems(const string &filename, int lvl) {
@@ -814,177 +1015,6 @@ void select_char() {
 }
 
 
-string selectDifficulty() {
-  slowCout("This is the Hall of Fame, here you will find many leaderboards regarding various statistics of all of the saved characters."
-           "\n\nPlease select the difficulty of the desired leaderboards series:\n");
-  slowCout("1. Easy\n");
-  slowCout("2. Normal\n");
-  slowCout("3. Hard\n");
-  slowCout("4. Extreme\n");
-  int choice;
-  do{
-    cout << "\nSelect a number > ";
-    cin >> choice;
-  }while(choice>4 || choice<1);
-
-  switch (choice) {
-      case 1: return "Easy";
-      case 2: return "Normal";
-      case 3: return "Hard";
-      case 4: return "Extreme";
-  }
-  return "Easy"; // Fallback in caso di errore.
-}
-
-string selectLeaderboardType() {
-  slowCout("Select leaderboard type:\n");
-  slowCout("1. Total Game\n");
-  slowCout("2. Dungeons\n");
-  cout << "\n> ";
-  int choice;
-  do{
-    cout << "\nSelect a number > ";
-    cin >> choice;
-  }while(choice>2 || choice<1);
-
-  return (choice == 1) ? "total_game" : "dungeons";
-}
-
-string selectTotalParam() {
-  slowCout("Select parameter:\n");
-  slowCout("1. Turns\n");
-  slowCout("2. Coins Spent\n");
-  slowCout("3. Kill-Death Ratio\n");
-  slowCout("4. Total Kills\n");
-  slowCout("5. Total Money Acquired\n");
-  slowCout("6. Level\n");
-  int choice;
-  do{
-    cout << "\nSelect a number > ";
-    cin >> choice;
-  }while(choice>6 || choice<1);
-
-  switch (choice) {
-      case 1: return "turns";
-      case 2: return "coins_spent";
-      case 3: return "kill_death_ratio";
-      case 4: return "tot_kills";
-      case 5: return "tot_money_acquired";
-      case 6: return "level";
-  }
-  return "turns"; // Fallback.
-}
-
-string selectDungeon() {
-  slowCout("Enter the name of the dungeon (e.g., Dungeon1, Dungeon2): ");
-  string dungeon;
-  cin >> dungeon;
-  return dungeon;
-}
-
-string selectDungeonParam() {
-  slowCout("Select dungeon parameter:\n");
-  slowCout("1. Turns to Complete\n");
-  slowCout("2. Kill-Death Ratio\n");
-  cout << "\n> ";
-  int choice;
-  do{
-    cout << "\nSelect a number > ";
-    cin >> choice;
-  }while(choice>2 || choice<1);
-
-  return (choice == 1) ? "turns_to_complete" : "kill_death_ratio";
-}
-
-void displayTotalLeaderboard(const json& leaderboards_data, const string& difficulty, const string& param) {
-  vector<pair<string, int>> leaderboard;
-
-  // Estrai i dati dal JSON
-  for (const auto& [character, character_data] : leaderboards_data["leaderboards"].items()) {
-      if (character_data.contains(difficulty) && character_data[difficulty].contains("total_game")) {
-          int value = character_data[difficulty]["total_game"][param].get<int>();
-          leaderboard.push_back({character, value});
-      }
-  }
-
-  // Ordina in ordine decrescente
-  sort(leaderboard.begin(), leaderboard.end(),
-            [](const auto& lhs, const auto& rhs) { return lhs.second > rhs.second; });
-
-  // Mostra i risultati
-  slowCout("\nTotal Leaderboard for parameter: " + param + " (Difficulty: " + difficulty + ")\n");
-  for (const auto& [character, value] : leaderboard) {
-      slowCout(character + ": " + to_string(value) + "\n");
-  }
-}
-
-void displayDungeonLeaderboard(const json& leaderboards_data, const string& difficulty, const string& dungeon, const string& param) {
-  vector<pair<string, double>> leaderboard;
-
-  // Estrai i dati dal JSON
-  for (const auto& [character, character_data] : leaderboards_data["leaderboards"].items()) {
-      if (character_data.contains(difficulty) && character_data[difficulty].contains("dungeons") && character_data[difficulty]["dungeons"].contains(dungeon)) {
-          double value = character_data[difficulty]["dungeons"][dungeon][param].get<double>();
-          leaderboard.push_back({character, value});
-      }
-  }
-
-  // Ordina in base alla metrica specificata (crescente o decrescente)
-  bool descending = (param == "kill_death_ratio"); // Solo kill_death_ratio è in ordine decrescente
-  sort(leaderboard.begin(), leaderboard.end(),
-            [descending](const auto& lhs, const auto& rhs) {
-                return descending ? lhs.second > rhs.second : lhs.second < rhs.second;
-            });
-
-  // Mostra i risultati
-  slowCout("\nDungeon Leaderboard: " + dungeon + ", parameter: " + param + " (Difficulty: " + difficulty + ")\n");
-  for (const auto& [character, value] : leaderboard) {
-      slowCout(character + ": " + to_string(value) + "\n");
-  }
-}
-
-void leaderboards_menu(const json& leaderboards_data) {
-  // Step 1: Seleziona difficoltà
-  string difficulty = selectDifficulty();
-
-  // Step 2: Scegli il tipo di leaderboard (totale o per dungeon)
-  string leaderboard_type = selectLeaderboardType();
-
-  if (leaderboard_type == "total_game") {
-      // Step 3a: Leaderboard Totale - seleziona tipo di parametro
-      string total_param = selectTotalParam();
-
-      // Mostra leaderboard totale basata sul parametro scelto
-      displayTotalLeaderboard(leaderboards_data, difficulty, total_param);
-  } else if (leaderboard_type == "dungeons") {
-      // Step 3b: Leaderboard per Dungeon - selezione Dungeon
-      string dungeon = selectDungeon();
-
-      // Step 4: Seleziona parametro specifico del dungeon
-      string dungeon_param = selectDungeonParam();
-
-      // Mostra leaderboard per il dungeon selezionato e parametro
-      displayDungeonLeaderboard(leaderboards_data, difficulty, dungeon, dungeon_param);
-  }
-
-  cout << "\n\nPress ENTER to leave the leaderboards...\n";
-  cin.ignore();
-  return;
-}
-
-/*json leaderboards_data = load_leaderboards_data("ideal_leads.json");
-  leaderboards_menu(leaderboards_data);*/
-
-json load_leaderboards_data(const string& file_path) {
-  ifstream file(file_path);
-  if (!file.is_open()) {
-      cerr << "Error opening file: " << file_path << endl;
-      exit(1);
-  }
-  json data;
-  file >> data;
-  return data;
-}
 
 int main() {
   clearScreen();
