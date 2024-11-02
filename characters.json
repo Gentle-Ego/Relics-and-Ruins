@@ -1,3 +1,30 @@
 {
-    "characters": []
+    "characters": [
+        {
+            "coins": 100,
+            "critical": 0.1,
+            "current_dungeon": 0,
+            "current_food": 100,
+            "current_turn": 0,
+            "defense": 10,
+            "dexterity": 10,
+            "difficulty": "Hard",
+            "equipped": [],
+            "experience": 0,
+            "health": 100,
+            "inventory": [],
+            "level": 1,
+            "mana": 50,
+            "mana_regeneration": 1,
+            "max_food": 100,
+            "max_health": 100,
+            "max_mana": 50,
+            "name": "Test",
+            "pos_x": 0,
+            "pos_y": 0,
+            "race": "Kobold",
+            "sex": "F",
+            "strength": 10
+        }
+    ]
 }

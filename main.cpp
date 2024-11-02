@@ -62,6 +62,17 @@ string stringToLower(const string &str) {
   return result;
 }
 
+string stringToUpper(const string &str) {
+  string result = "";
+
+  for (char ch : str) {
+    // Convert each character to uppercase using toupper
+    result += toupper(ch);
+  }
+
+  return result;
+}
+
 string findPosition(int x) {
   switch (x) {
   case -3:
@@ -109,6 +120,8 @@ static int calculateLevel(int experience) {
   }
   return level - 1;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Character {
 public:
@@ -317,6 +330,8 @@ public:
   }
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void main_menu(Character character);    // Dichiarazione funzione main_menu
 
 // Funzione per convertire da JSON a oggetto Character
@@ -358,6 +373,7 @@ Character fromJSONtoCharacter(json ch) {
   return c;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 string selectDifficulty() {
   clearScreen();
@@ -587,6 +603,8 @@ vector<json> loadShopItems(const string &filename, int lvl) {
   return items;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Funzione per il negozio
 void shop(Character &character) {
   character.current_dungeon = -2;
@@ -700,6 +718,84 @@ shopx:
   }
 }
 
+void showInventory(Character &character)
+{
+  return;
+}
+
+void profile(Character &character)
+{
+  clearScreen();
+  /*
+    "╔═══════════════════════════════════════╗
+     ║  + ["name"] + "'s PROFILE"            ║
+     ╠═══════════════════════════════════════╣
+    -║ NAME:                                 ║
+    -║ RACE:                                 ║
+    -║ SEX:                                  ║
+    -╠═══════════════════════════════════════╣
+    -║ COINS:                                ║
+    -║ LEVEL: currexp/nextexp  lvl           ║
+    -║ HEALTH: curr/max                      ║
+    -║ MANA: curr/max                        ║
+    -║ TURN:                                 ║
+    -║ CURRENT LOCATION:                     ║
+    -╠═══════════════════════════════════════╣
+    -║ GAME MODE: Easy/Normal/Hard/Extreme   ║
+    -║ KILLS: value (classifica globale)     ║
+    -║ DEATHS: value (classifica globale)    ║
+    -║ KILLS/DEATHS RATIO: value (class. gl.)║
+    -╠═══════════════════════════════════════╣
+    -║ INVENTARIO                            ║
+    -║ ABILITA'                              ║
+  */ 
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S PROFILE\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "║ NAME: ";
+  slowCout(character.name);
+  cout << "║ RACE: ";
+  slowCout(character.race);
+  cout << "║ SEX: ";
+  slowCout(character.sex);
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "║ COINS: ";
+  slowCout(to_string(character.coins));
+  cout << "║ LEVEL: ";
+  slowCout(to_string(character.level));
+  cout << "║ HEALTH: ";
+  slowCout(to_string(character.health));
+  slowCout(" / ");
+  slowCout(to_string(character.max_health));
+  cout << "║ MANA: ";
+  slowCout(to_string(character.mana));
+  slowCout(" / ");
+  slowCout(to_string(character.max_mana));
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "║ TURN: ";
+  slowCout(to_string(character.current_turn));
+  cout << "║ CURRRENT LOCATION: ";
+  slowCout(findPosition(character.current_dungeon));
+  cout << "║ GAME MODE: ";
+  slowCout(character.difficulty);
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "║ KILLS: ";
+  slowCout(to_string(character.tot_kills));
+  cout << "║ DEATHS: ";
+  slowCout(to_string(character.deaths));
+  cout << "║ KDR: ";
+  slowCout(to_string(character.tot_kills / character.deaths));
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "║ For INVENTORY, type inventory...";
+  cout << "║ For ABILITIES, type abilities...";
+  cout << "╚═══════════════════════════════════════╝\n";
+
+  return;
+}
+
 void mha_menu(Character character) {
   clearScreen();
   character.current_dungeon = -3;
@@ -739,25 +835,31 @@ void main_menu(Character character) {
   slowCout("2. Go to the Monster Hunter Association\n");
   slowCout("3. Check your profile\n");
   slowCout("4. Check the Hall of Fame\n");
+  slowCout("5. Quit game\n");
   int choice;
   do{
     cout << "\nSelect a number > ";
     cin >> choice;
-  }while(choice>4 || choice<1);
+  }while(choice>5 || choice<1);
 
   switch (choice) {
     case 1:
       shop(character);
     case 2:
       mha_menu(character);
-      // case 3:
-      // profile(character);
-    //case 4:
-      //json leaderboards_data = load_leaderboards_data("ideal_leads.json");
-      //leaderboards_menu(leaderboards_data);
+    case 3:
+      profile(character);
+    case 4:{
+      json leaderboards_data = load_leaderboards_data("ideal_leads.json");
+      leaderboards_menu(leaderboards_data);
+    }
+    default:
+      return;
   }
   main_menu(character);
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void start_game(Character character) {
   string tutChoice;
@@ -934,7 +1036,10 @@ void start_game(Character character) {
     // mha_menu(character);
   } else {
   }
+  return;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void select_char() {
   string scelta = "";
@@ -1004,7 +1109,7 @@ void select_char() {
       } while (s != "M" && s != "F");
 
       do {
-        cout << "Choose your difficulty:\n• Easy\n• Normal\n• Hard\n• Extreme";
+        cout << "Choose your difficulty:\n• Easy\n• Normal\n• Hard\n• Extreme: ";
         cin >> d;
       } while (find(difficultiesFirst, difficultiesLast, d) == DIFFICULTIES.end());
 
@@ -1023,8 +1128,6 @@ void select_char() {
 
 int main() {
   clearScreen();
-  //select_char();
-  json leaderboards_data = load_leaderboards_data("ideal_leads.json");
-  leaderboards_menu(leaderboards_data);
+  select_char();
   return 0;
 }
