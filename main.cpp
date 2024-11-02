@@ -8,8 +8,10 @@
 #include <thread>
 #include <vector>
 
+
 using json = nlohmann::json;
 using namespace std;
+
 
 // Link Utili:
 /*
@@ -561,7 +563,7 @@ void leaderboards_menu(const json& leaderboards_data) {
   }
 
   cout << "\n\nPress ENTER to leave the leaderboards...\n";
-  cin.ignore();
+  system("pause");
   return;
 }
 
@@ -608,6 +610,7 @@ vector<json> loadShopItems(const string &filename, int lvl) {
 // Funzione per il negozio
 void shop(Character &character) {
   character.current_dungeon = -2;
+  character.write_character_to_json(character);
   string filename, option;
 shop:
   clearScreen();
@@ -757,48 +760,51 @@ void profile(Character &character)
   cout << "╠═══════════════════════════════════════╣\n";
   cout << "║ NAME: ";
   slowCout(character.name);
-  cout << "║ RACE: ";
+  cout << "\n║ RACE: ";
   slowCout(character.race);
-  cout << "║ SEX: ";
+  cout << "\n║ SEX: ";
   slowCout(character.sex);
-  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "\n╠═══════════════════════════════════════╣\n";
   cout << "║ COINS: ";
   slowCout(to_string(character.coins));
-  cout << "║ LEVEL: ";
+  cout << "\n║ LEVEL: ";
   slowCout(to_string(character.level));
-  cout << "║ HEALTH: ";
+  cout << "\n║ HEALTH: ";
   slowCout(to_string(character.health));
   slowCout(" / ");
   slowCout(to_string(character.max_health));
-  cout << "║ MANA: ";
+  cout << "\n║ MANA: ";
   slowCout(to_string(character.mana));
   slowCout(" / ");
   slowCout(to_string(character.max_mana));
-  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "\n╠═══════════════════════════════════════╣\n";
   cout << "║ TURN: ";
   slowCout(to_string(character.current_turn));
-  cout << "║ CURRRENT LOCATION: ";
+  cout << "\n║ CURRRENT LOCATION: ";
   slowCout(findPosition(character.current_dungeon));
-  cout << "║ GAME MODE: ";
+  cout << "\n║ GAME MODE: ";
   slowCout(character.difficulty);
-  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "\n╠═══════════════════════════════════════╣\n";
   cout << "║ KILLS: ";
   slowCout(to_string(character.tot_kills));
-  cout << "║ DEATHS: ";
+  cout << "\n║ DEATHS: ";
   slowCout(to_string(character.deaths));
-  cout << "║ KDR: ";
-  slowCout(to_string(character.tot_kills / character.deaths));
-  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "\n║ KDR: ";
+  //slowCout(to_string(character.tot_kills / character.deaths));
+  cout << "\n╠═══════════════════════════════════════╣\n";
   cout << "║ For INVENTORY, type inventory...";
-  cout << "║ For ABILITIES, type abilities...";
-  cout << "╚═══════════════════════════════════════╝\n";
-
+  cout << "\n║ For ABILITIES, type abilities...";
+  cout << "\n╚═══════════════════════════════════════╝\n";
+  slowCout("Press Enter to return to the Main Menu\n");
+  system("pause");
+  main_menu(character);
   return;
 }
 
 void mha_menu(Character character) {
   clearScreen();
   character.current_dungeon = -3;
+  character.write_character_to_json(character);
   slowCout("You are now in the Monster Hunter Association.\n");
   slowCout("What would you like to do?\n");
   slowCout("1. Go to the Dungeons\n");
@@ -827,8 +833,9 @@ void mha_menu(Character character) {
 }
 
 void main_menu(Character character) {
-  clearScreen();
   character.current_dungeon = 0;
+  character.write_character_to_json(character);
+  clearScreen();
   slowCout("You are now in the main part of the capital city of Valoria.\n");
   slowCout("What would you like to do?\n");
   slowCout("1. Go to the shop\n");
@@ -900,15 +907,15 @@ void start_game(Character character) {
 
     slowCout(
         "\nIt's a brisk morning, and the first rays of sunlight begin to warm "
-        "the chilly air as you make your way to the association. The path is "
+        "the chilly air as you make your way to the association. \nThe path is "
         "familiar, but today, every step feels heavier, charged with "
         "anticipation. After years of waiting, you're finally here, standing "
         "at the threshold, 18 and ready to join.\nThe building stands tall and "
         "welcoming, with the association's emblem proudly displayed by the "
-        "entrance. You take a deep breath and step inside, feeling a strange "
+        "entrance. \nYou take a deep breath and step inside, feeling a strange "
         "mix of nerves and excitement. \nThe reception area is bustling, with "
         "people chatting and moving about, each seemingly caught up in their "
-        "own purpose. You feel an odd sense of belonging, this is where you've "
+        "own purpose. \nYou feel an odd sense of belonging, this is where you've "
         "always wanted to be, and today, it's happening.\nApproaching the "
         "front desk there is a red haired cute girl waiting, you hand over "
         "your ID with a subtle grin, savoring the moment. The receptionist "
@@ -933,7 +940,7 @@ void start_game(Character character) {
                         character);
     }
     cout << "\n\nPress ENTER to continue...\n";
-    cin.ignore();
+    system("pause");
     clearScreen();
 
     slowCout(
@@ -955,12 +962,12 @@ void start_game(Character character) {
         "rest in our motel, The Golden Pidgeon, tomorrow I'll help you find "
         "the shops, and after the dungeons.\"");
     cout << "\n\nPress ENTER to continue...\n";
-    cin.ignore();
+    system("pause");
     clearScreen();
     slowCout("Sleeping, at the Golden Pidgeon", 100);
     slowCout(". . . . . . . .", 1000);
     cout << "\n\nPress ENTER to wake up...";
-    cin.ignore();
+    system("pause");
     clearScreen();
 
     slowCout(
@@ -976,7 +983,7 @@ void start_game(Character character) {
              "tour around Eràn, and then we'll head down to the association "
              "basement where the dungeons are located.\"\n\n");
     cout << "\n\nPress ENTER to continue...\n";
-    cin.ignore();
+    system("pause");
     clearScreen();
 
     slowCout("You follow Rosie out of The Golden Pigeon and into the heart of "
@@ -992,7 +999,7 @@ void start_game(Character character) {
              "purchase should match your style, whether it's something more "
              "defensive or offensive.\"\n\n");
     cout << "\n\nPress ENTER to continue...\n";
-    cin.ignore();
+    system("pause");
     clearScreen();
 
     slowCout(
@@ -1012,7 +1019,7 @@ void start_game(Character character) {
         "on the atmosphere. You take a deep breath, preparing yourself.\n\n");
 
     cout << "\n\nPress ENTER to continue...\n";
-    cin.ignore();
+    system("pause");
     clearScreen();
     slowCout(
         "Rosie:\n\"But first, you'll need the right equipment. The association "
@@ -1021,7 +1028,7 @@ void start_game(Character character) {
         "I'll show you the way to the dungeon entrance.\"\n\n");
 
     cout << "\n\nPress ENTER to head to the shops...\n";
-    cin.ignore();
+    system("pause");
     clearScreen();
 
     shop(character);
