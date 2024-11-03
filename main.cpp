@@ -178,25 +178,38 @@ public:
   // Aggiungi un singolo oggetto
   void addItem(const json &item, Character &character) {
     if (!item.contains("name")) {
-        throw invalid_argument("Item must contain 'name' field");
+      //cout << "ERROR IN ADD ITEM";
+      throw invalid_argument("Item must contain 'name' field");
     }
+    cout << "1\n";
 
     auto it = find_if(inventory.begin(), inventory.end(),
                       [&item](const json &invItem) { return invItem["name"] == item["name"]; });
               // potevo benissimo usare hasItem, ma volevo testare una cosa eheh...
+    cout << "2\n";
 
     if (it != inventory.end()) { // Se l'oggetto esiste già
-        if (it->contains("count")) {
-            (*it)["count"] += 1;  // it->at("count") è un altro modo al posto di (*it)["count"] non è un puntatore, ma iteratore
-        } else {
-            (*it)["count"] = 1;  // se "count" non esiste, usa 1 come default
-        }   // cosa importante, (*it)["count"] crea "count" nel caso non esista, in questo caso non importa poichè è controllato per sicurezza
+    cout << "3\n";
+      if (it->contains("count")) {
+    cout << "4\n";
+          (*it)["count"] += 1;  // it->at("count") è un altro modo al posto di (*it)["count"] non è un puntatore, ma iteratore
+    cout << "5\n";
+      } else {
+    cout << "6\n";
+          (*it)["count"] = 1;  // se "count" non esiste, usa 1 come default
+    cout << "7\n";
+      }   // cosa importante, (*it)["count"] crea "count" nel caso non esista, in questo caso non importa poichè è controllato per sicurezza
     } else { // Se l'oggetto non esiste, aggiungilo con il suo 'count'
-        json newItem = item;
-        if (!newItem.contains("count")) {
-            newItem["count"] = 1; // Iniializza 'count' a 1 se non è presente
-        }
-        inventory.push_back(newItem);
+    cout << "8\n";
+      json newItem = item;
+    cout << "9\n";
+      if (!newItem.contains("count")) {
+    cout << "10\n";
+          newItem["count"] = 1; // Iniializza 'count' a 1 se non è presente
+    cout << "11\n";
+      }
+      inventory.push_back(newItem);
+    cout << "12\n";
     }
 
     write_character_to_json(character);
@@ -708,11 +721,11 @@ shopx:
         goto shopx;
       }
     } else {
-      character.coins += int(selectedItem["value"]) * 0.75;
+      character.coins += int(int(selectedItem["value"]) * 0.75);
       character.removeItem(selectedItem["name"], character);
       clearScreen();
       cout << "Sold " << selectedItem["name"] << " for "
-           << double(selectedItem["value"]) * 0.75 << " coins!\n";
+           << int(double(selectedItem["value"]) * 0.75) << " coins!\n";
       goto shopx;
     }
   } else {
@@ -792,12 +805,28 @@ void profile(Character &character)
   cout << "\n║ KDR: ";
   //slowCout(to_string(character.tot_kills / character.deaths));
   cout << "\n╠═══════════════════════════════════════╣\n";
-  cout << "║ For INVENTORY, type inventory...";
-  cout << "\n║ For ABILITIES, type abilities...";
+  cout << "║ For INVENTORY, type 1...";
+  cout << "\n║ For ABILITIES, type 2...";
   cout << "\n╚═══════════════════════════════════════╝\n";
-  slowCout("\n");
-  system("pause");
-  main_menu(character);
+  cout << endl;
+
+  cout << "What would you like to do?";
+  cout << "\n1. Check my inventory\n2. Check my abilities\n3. Return to the Main Menu\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>3 || choice<1);
+
+  switch (choice) {
+    case 1:
+      // showInventory(character);
+    case 2:
+      // showAbilities(character);
+    case 3:
+       main_menu(character);
+  }
   return;
 }
 
@@ -814,9 +843,6 @@ void mha_menu(Character character) {
   int choice;
   do{
     cout << "\nSelect a number > ";
-    cin >> choice;
-  }while(choice>4 || choice<1);
-  do{
     cin >> choice;
   }while(choice>4 || choice<1);
 

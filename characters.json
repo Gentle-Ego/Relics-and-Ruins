@@ -1,9 +1,9 @@
 {
     "characters": [
         {
-            "coins": 100,
+            "coins": 97,
             "critical": 0.1,
-            "current_dungeon": 0,
+            "current_dungeon": -2,
             "current_food": 100,
             "current_turn": 0,
             "defense": 10,
@@ -12,7 +12,17 @@
             "equipped": [],
             "experience": 0,
             "health": 100,
-            "inventory": [],
+            "inventory": [
+                {
+                    "count": 1,
+                    "defense": 5,
+                    "info": "light",
+                    "level_required": 1,
+                    "name": "Cloth Tunic",
+                    "type": "armor",
+                    "value": 3
+                }
+            ],
             "level": 1,
             "mana": 50,
             "mana_regeneration": 1,
