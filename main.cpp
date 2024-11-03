@@ -562,7 +562,7 @@ void leaderboards_menu(const json& leaderboards_data) {
       displayDungeonLeaderboard(leaderboards_data, difficulty, dungeon, dungeon_param);
   }
 
-  cout << "\n\nPress ENTER to leave the leaderboards...\n";
+  cout << "\n";
   system("pause");
   return;
 }
@@ -795,7 +795,7 @@ void profile(Character &character)
   cout << "║ For INVENTORY, type inventory...";
   cout << "\n║ For ABILITIES, type abilities...";
   cout << "\n╚═══════════════════════════════════════╝\n";
-  slowCout("Press Enter to return to the Main Menu\n");
+  slowCout("\n");
   system("pause");
   main_menu(character);
   return;
@@ -939,7 +939,7 @@ void start_game(Character character) {
       character.addItem({{"type", "badge"}, {"name", "Association Badge"}},
                         character);
     }
-    cout << "\n\nPress ENTER to continue...\n";
+    cout << "\n";
     system("pause");
     clearScreen();
 
@@ -961,12 +961,12 @@ void start_game(Character character) {
         "equipment according to yourfighting style.\n\nOk now, please take a "
         "rest in our motel, The Golden Pidgeon, tomorrow I'll help you find "
         "the shops, and after the dungeons.\"");
-    cout << "\n\nPress ENTER to continue...\n";
+    cout << "\n";
     system("pause");
     clearScreen();
     slowCout("Sleeping, at the Golden Pidgeon", 100);
     slowCout(". . . . . . . .", 1000);
-    cout << "\n\nPress ENTER to wake up...";
+    cout << "\n";
     system("pause");
     clearScreen();
 
@@ -982,7 +982,6 @@ void start_game(Character character) {
              "today,\" she says with a grin. \"Now, let me take you on a short "
              "tour around Eràn, and then we'll head down to the association "
              "basement where the dungeons are located.\"\n\n");
-    cout << "\n\nPress ENTER to continue...\n";
     system("pause");
     clearScreen();
 
@@ -998,7 +997,6 @@ void start_game(Character character) {
              "weapons to potions and magical items. Just remember, your first "
              "purchase should match your style, whether it's something more "
              "defensive or offensive.\"\n\n");
-    cout << "\n\nPress ENTER to continue...\n";
     system("pause");
     clearScreen();
 
@@ -1018,7 +1016,6 @@ void start_game(Character character) {
         "earth, as if centuries of battles and challenges have left their mark "
         "on the atmosphere. You take a deep breath, preparing yourself.\n\n");
 
-    cout << "\n\nPress ENTER to continue...\n";
     system("pause");
     clearScreen();
     slowCout(
@@ -1027,7 +1024,6 @@ void start_game(Character character) {
         "sure you're well prepared. Once you're ready, come back here, and "
         "I'll show you the way to the dungeon entrance.\"\n\n");
 
-    cout << "\n\nPress ENTER to head to the shops...\n";
     system("pause");
     clearScreen();
 
