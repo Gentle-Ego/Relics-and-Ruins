@@ -192,11 +192,11 @@ public:
     cout << "3\n";
       if (it->contains("count")) {
     cout << "4\n";
-          (*it)["count"] += 1;  // it->at("count") è un altro modo al posto di (*it)["count"] non è un puntatore, ma iteratore
+          (*it)["count"] = int((*it)["count"]) + 1;  // (*it)["count"].get<int>() it->at("count") è un altro modo al posto di (*it)["count"] non è un puntatore, ma iteratore
     cout << "5\n";
       } else {
     cout << "6\n";
-          (*it)["count"] = 1;  // se "count" non esiste, usa 1 come default
+          (*it)["count"] = 2;  // se "count" non esiste, usa 1 come default
     cout << "7\n";
       }   // cosa importante, (*it)["count"] crea "count" nel caso non esista, in questo caso non importa poichè è controllato per sicurezza
     } else { // Se l'oggetto non esiste, aggiungilo con il suo 'count'
