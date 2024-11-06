@@ -736,6 +736,28 @@ shopx:
 
 void showInventory(Character &character)
 {
+  clearScreen();
+
+  // 1/n
+  // 1. Find certain Object
+  // 2. Go to the next page
+  // 3. Go to previous page
+  // 4. Back to the Profile
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S INVENTORY\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "║ NAME: ";
+  cout << "╠═══════════════════╦═══════════════════╣\n";
+  cout << "║ TYPE: \"ARMOR\"    ";
+  cout << "╠═══════════════════╬═══════════════════╣\n";
+  cout << "║ NAME: ";
+  cout << "╠═══════════════════╬═══════════════════╣\n";
+  cout << "║ NAME: ";
+  cout << "╠═══════════════════╩═══════════════════╣\n";
+
+
+  system("pause");
   return;
 }
 
