@@ -844,10 +844,12 @@ void profile(Character &character)
   switch (choice) {
     case 1:
       // showInventory(character);
+      return;
     case 2:
       // showAbilities(character);
+      return;
     case 3:
-       main_menu(character);
+       return;
   }
   return;
 }
@@ -859,9 +861,8 @@ void mha_menu(Character character) {
   slowCout("You are now in the Monster Hunter Association.\n");
   slowCout("What would you like to do?\n");
   slowCout("1. Go to the Dungeons\n");
-  slowCout("2. Go to the Quests Board\n");
-  slowCout("3. Talk to Rosie\n");
-  slowCout("4. Exit the Association\n");
+  slowCout("2. Check the Hall of Fame\n");
+  slowCout("3. Exit the Association\n");
   int choice;
   do{
     cout << "\nSelect a number > ";
@@ -871,11 +872,13 @@ void mha_menu(Character character) {
   switch (choice) {
     case 1:
       // dungeonsMenu(character);
-    case 2:
-      // questsMenu(character);
-    case 3:
-      // rosie(character);
-    case 4:
+      return;
+    case 2:{
+      json leaderboards_data = load_leaderboards_data("ideal_leads.json");
+      leaderboards_menu(leaderboards_data);
+    }
+      return;
+    default:
       return;
   }
 }
@@ -889,8 +892,7 @@ void main_menu(Character character) {
   slowCout("1. Go to the shop\n");
   slowCout("2. Go to the Monster Hunter Association\n");
   slowCout("3. Check your profile\n");
-  slowCout("4. Check the Hall of Fame\n");
-  slowCout("5. Quit game\n");
+  slowCout("4. Quit game\n");
   int choice;
   do{
     cout << "\nSelect a number > ";
@@ -900,14 +902,13 @@ void main_menu(Character character) {
   switch (choice) {
     case 1:
       shop(character);
+      return;
     case 2:
       mha_menu(character);
+      return;
     case 3:
       profile(character);
-    case 4:{
-      json leaderboards_data = load_leaderboards_data("ideal_leads.json");
-      leaderboards_menu(leaderboards_data);
-    }
+      return;
     default:
       return;
   }
