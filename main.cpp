@@ -854,6 +854,109 @@ void profile(Character &character)
   return;
 }
 
+void mhaPub (Character character)
+{
+  clearScreen();
+  int youWantToBeDrunk = 0;
+  int timesPassedOut = 0;
+  pu:
+  slowCout("You are now in the Pub.\n");
+  slowCout("What would you like to do?\n");
+  slowCout("1. Buy ale (2 coins)\n");
+  slowCout("2. Buy beer (4 coins)\n");
+  slowCout("3. Buy whisky (20 coins)\n");
+  slowCout("4. Back to the Association hall\n");
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>4 || choice<1);
+
+  switch (choice) {
+    case 1:
+      if (character.coins >= 2) {
+        character.coins -= 2;
+        clearScreen();
+        cout << "Purchased Ale for 2 coins\n";
+      } else {
+        clearScreen();
+        cout << "Not enough coins to buy Ale. You really are that poor\n";
+      }
+      youWantToBeDrunk +=2;
+      if (youWantToBeDrunk >= 20)
+      {
+        slowCout("You drunk too much alchool and passed out, you lost 5HP\n");
+        slowCout(". . . . . ", 40);
+        slowCout("You are now awake");
+        character.health -= 5;
+        timesPassedOut += 1;
+        youWantToBeDrunk = 0;
+      }
+      if (timesPassedOut >= 3)
+      {
+        slowCout("You really love alchool, maybe too much, everything goes dark and you die\n\n");
+        timesPassedOut = 0;
+        character.health = 0;
+      }
+      break;
+    case 2:
+      if (character.coins >= 4) {
+        character.coins -= 4;
+        clearScreen();
+        cout << "Purchased Beer for 4 coins\n";
+      } else {
+        clearScreen();
+        cout << "Not enough coins to buy Beer, very sad :( " << ".\n";
+      }
+      youWantToBeDrunk +=4;
+      if (youWantToBeDrunk >= 20)
+      {
+        slowCout("You drunk too much alchool and passed out, you lost 6HP\n");
+        slowCout(". . . . . ", 40);
+        slowCout("You are now awake");
+        character.health -= 6;
+        timesPassedOut += 1;
+        youWantToBeDrunk = 0;
+      }
+      if (timesPassedOut >= 3)
+      {
+        slowCout("You really love alchool, maybe too much, everything goes dark and you die\n\n");
+        timesPassedOut = 0;
+        character.health = 0;
+      }
+      break;
+    case 3:
+      if (character.coins >= 20) {
+        character.coins -= 20;
+        clearScreen();
+        cout << "Purchased Whisky for 20 coins\n";
+      } else {
+        clearScreen();
+        cout << "Not enough coins to buy Whisky, you are poor" << ".\n";
+      }
+      youWantToBeDrunk +=10;
+      if (youWantToBeDrunk >= 20)
+      {
+        slowCout("You drunk too much alchool and passed out, you lost 10HP\n");
+        slowCout(". . . . . ", 40);
+        slowCout("You are now awake");
+        character.health -= 10;
+        timesPassedOut += 1;
+        youWantToBeDrunk = 0;
+      }
+      if (timesPassedOut >= 3)
+      {
+        slowCout("You really love alchool, maybe too much, everything goes dark and you die\n\n");
+        timesPassedOut = 0;
+        character.health = 0;
+      }
+      break;
+    default:
+      return;
+  }
+  goto pu;
+}
+
 void mha_menu(Character character) {
   clearScreen();
   character.current_dungeon = -3;
@@ -862,7 +965,8 @@ void mha_menu(Character character) {
   slowCout("What would you like to do?\n");
   slowCout("1. Go to the Dungeons\n");
   slowCout("2. Check the Hall of Fame\n");
-  slowCout("3. Exit the Association\n");
+  slowCout("3. Go to the pub\n");
+  slowCout("4. Exit the Association\n");
   int choice;
   do{
     cout << "\nSelect a number > ";
@@ -872,15 +976,19 @@ void mha_menu(Character character) {
   switch (choice) {
     case 1:
       // dungeonsMenu(character);
-      return;
+      break;
     case 2:{
       json leaderboards_data = load_leaderboards_data("ideal_leads.json");
       leaderboards_menu(leaderboards_data);
     }
-      return;
+      break;
+    case 3:
+      mhaPub(character);
+      break;
     default:
       return;
   }
+  mha_menu(character);
 }
 
 void main_menu(Character character) {
@@ -902,13 +1010,13 @@ void main_menu(Character character) {
   switch (choice) {
     case 1:
       shop(character);
-      return;
+      break;
     case 2:
       mha_menu(character);
-      return;
+      break;
     case 3:
       profile(character);
-      return;
+      break;
     default:
       return;
   }
@@ -917,7 +1025,7 @@ void main_menu(Character character) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void start_game(Character character) {
+void start_game(Character &character) {
   string tutChoice;
   // Aspetta 5 secondi prima di iniziare il gioco
   this_thread::sleep_for(chrono::seconds(4));
@@ -1085,7 +1193,7 @@ void start_game(Character character) {
   } else if (character.current_dungeon == -2) {
     shop(character);
   } else if (character.current_dungeon == -3) {
-    // mha_menu(character);
+    mha_menu(character);
   } else {
   }
   return;
@@ -1134,6 +1242,7 @@ void select_char() {
                    << chosen_char.level << ")\n";
               x = false;
               start_game(chosen_char);
+              return;
             }
           }
         } while (x);
@@ -1172,6 +1281,7 @@ void select_char() {
            << chosen_char.level << ")\n";
       chosen_char.write_character_to_json(chosen_char);
       start_game(chosen_char);
+      return;
     }
   } while (scelta != "YES" && scelta != "NO");
 }
