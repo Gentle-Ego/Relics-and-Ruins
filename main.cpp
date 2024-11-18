@@ -675,7 +675,8 @@ shop:
   do {
     slowCout("Would you like to Buy or Sell?\n");
     cin >> option;
-  } while (option != "Buy" && option != "Sell");
+    option = stringToLower(option);
+  } while (option != "buy" && option != "sell");
 shopx:
   vector<json> items;
 
@@ -702,7 +703,8 @@ shopx:
   }
   // Selezione e acquisto
   int itemChoice;
-  cout << "Enter the number of the item to " << option << " (or 0 to exit): ";
+  cout << "Your current coins are: " << character.coins << endl;
+  cout << "Enter the number of the item to " << stringToLower(option) << " (or 0 to exit): ";
   cin >> itemChoice;
 
   if (itemChoice > 0 && itemChoice <= items.size()) {
@@ -756,6 +758,22 @@ void showInventory(Character &character)
   cout << "║ NAME: ";
   cout << "╠═══════════════════╩═══════════════════╣\n";
 
+
+  system("pause");
+  return;
+}
+
+void showAbilities(Character &character)
+{
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S ABILITIES\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "║ DEFENCE: ";
+  cout << "║ CRITICAL: ";
+  cout << "║ DEXTERITY: ";
+  cout << "║ STRENGHT: ";
 
   system("pause");
   return;
@@ -846,7 +864,7 @@ void profile(Character &character)
       // showInventory(character);
       return;
     case 2:
-      // showAbilities(character);
+      showAbilities(character);
       return;
     case 3:
        return;
@@ -886,8 +904,8 @@ void mhaPub (Character character)
       if (youWantToBeDrunk >= 20)
       {
         slowCout("You drunk too much alchool and passed out, you lost 5HP\n");
-        slowCout(". . . . . ", 40);
-        slowCout("You are now awake");
+        slowCout(". . . . . ", 400);
+        slowCout("\nYou are now awake\n");
         character.health -= 5;
         timesPassedOut += 1;
         youWantToBeDrunk = 0;
@@ -912,8 +930,8 @@ void mhaPub (Character character)
       if (youWantToBeDrunk >= 20)
       {
         slowCout("You drunk too much alchool and passed out, you lost 6HP\n");
-        slowCout(". . . . . ", 40);
-        slowCout("You are now awake");
+        slowCout(". . . . . ", 400);
+        slowCout("\nYou are now awake\n");
         character.health -= 6;
         timesPassedOut += 1;
         youWantToBeDrunk = 0;
@@ -938,8 +956,8 @@ void mhaPub (Character character)
       if (youWantToBeDrunk >= 20)
       {
         slowCout("You drunk too much alchool and passed out, you lost 10HP\n");
-        slowCout(". . . . . ", 40);
-        slowCout("You are now awake");
+        slowCout(". . . . . ", 400);
+        slowCout("\nYou are now awake\n");
         character.health -= 10;
         timesPassedOut += 1;
         youWantToBeDrunk = 0;
@@ -1196,6 +1214,7 @@ void start_game(Character &character) {
     mha_menu(character);
   } else {
   }
+  main_menu(character);
   return;
 }
 
