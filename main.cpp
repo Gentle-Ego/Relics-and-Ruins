@@ -736,6 +736,8 @@ shopx:
   }
 }
 
+extern void showInventory(Character &character);
+
 void showArmorInventory(Character &character)
 {
   clearScreen();
@@ -745,9 +747,10 @@ void showArmorInventory(Character &character)
   cout << "╠═══════════════════════════════════════╣\n";
 
   cout << "\n";
-  slowCout("Press anything to return to Inventory");
+  slowCout("Press anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
+  showInventory(character);
   return;
 }
 
@@ -760,9 +763,10 @@ void showWeaponInventory(Character &character)
   cout << "╠═══════════════════════════════════════╣\n";
 
   cout << "\n";
-  slowCout("Press anything to return to Inventory");
+  slowCout("Enter anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
+  showInventory(character);
   return;
 }
 
@@ -775,9 +779,10 @@ void showFoodInventory(Character &character)
   cout << "╠═══════════════════════════════════════╣\n";
 
   cout << "\n";
-  slowCout("Press anything to return to Inventory");
+  slowCout("Enter anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
+  showInventory(character);
   return;
 }
 
@@ -790,9 +795,10 @@ void showUsablesInventory(Character &character)
   cout << "╠═══════════════════════════════════════╣\n";
   
   cout << "\n";
-  slowCout("Press anything to return to Inventory");
+  slowCout("Enter anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
+  showInventory(character);
   return;
 }
 
@@ -805,19 +811,20 @@ void showUtilitiesInventory(Character &character)
   cout << "╠═══════════════════════════════════════╣\n";
 
   cout << "\n";
-  slowCout("Press anything to return to Inventory");
+  slowCout("Enter anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
+  showInventory(character);
   return;
 }
 
 void showInventory(Character &character)
 {
   clearScreen();
-  cout << "╔═══════════════════════════════════════╗\n";
+  cout << "╔═══════════════════════════════════════════════════════╗\n";
   slowCout("║ "+stringToUpper(character.name));
   slowCout("'S INVENTORY\n");
-  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "╠═══════════════════════════════════════════════════════╣\n";
   slowCout("║ What part of the inventory would you like to see");
   slowCout("\n║ 1. Armors");
   slowCout("\n║ 2. Weapons");
@@ -825,13 +832,13 @@ void showInventory(Character &character)
   slowCout("\n║ 4. Usables");
   slowCout("\n║ 5. Utilities");
   slowCout("\n║ 6. Back to Profile");
-  cout << "\n╚═══════════════════════════════════════╝\n";
+  cout << "\n╚══════════════════════════════════════════════════════╝\n";
   
   int choice;
   do{
     cout << "\nSelect a number > ";
     cin >> choice;
-  }while(choice>5 || choice<1);
+  }while(choice>6 || choice<1);
 
   switch (choice) {
     case 1:
@@ -849,6 +856,8 @@ void showInventory(Character &character)
     case 5:
       showUtilitiesInventory(character); 
       break;
+    case 6:
+      return;
     default:
     return;
   }
