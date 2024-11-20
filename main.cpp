@@ -736,46 +736,147 @@ shopx:
   }
 }
 
+void showArmorInventory(Character &character)
+{
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S ARMORS\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+
+  cout << "\n";
+  slowCout("Press anything to return to Inventory");
+  string temp;
+  cin >> temp;
+  return;
+}
+
+void showWeaponInventory(Character &character)
+{
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S WEAPONS\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+
+  cout << "\n";
+  slowCout("Press anything to return to Inventory");
+  string temp;
+  cin >> temp;
+  return;
+}
+
+void showFoodInventory(Character &character)
+{
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S FOOD\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+
+  cout << "\n";
+  slowCout("Press anything to return to Inventory");
+  string temp;
+  cin >> temp;
+  return;
+}
+
+void showUsablesInventory(Character &character)
+{
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S USABLES\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+  
+  cout << "\n";
+  slowCout("Press anything to return to Inventory");
+  string temp;
+  cin >> temp;
+  return;
+}
+
+void showUtilitiesInventory(Character &character)
+{
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S UTILITIES\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+
+  cout << "\n";
+  slowCout("Press anything to return to Inventory");
+  string temp;
+  cin >> temp;
+  return;
+}
+
 void showInventory(Character &character)
 {
   clearScreen();
-
-  // 1/n
-  // 1. Find certain Object
-  // 2. Go to the next page
-  // 3. Go to previous page
-  // 4. Back to the Profile
   cout << "╔═══════════════════════════════════════╗\n";
   slowCout("║ "+stringToUpper(character.name));
   slowCout("'S INVENTORY\n");
   cout << "╠═══════════════════════════════════════╣\n";
-  cout << "║ NAME: ";
-  cout << "╠═══════════════════╦═══════════════════╣\n";
-  cout << "║ TYPE: \"ARMOR\"    ";
-  cout << "╠═══════════════════╬═══════════════════╣\n";
-  cout << "║ NAME: ";
-  cout << "╠═══════════════════╬═══════════════════╣\n";
-  cout << "║ NAME: ";
-  cout << "╠═══════════════════╩═══════════════════╣\n";
+  slowCout("║ What part of the inventory would you like to see");
+  slowCout("\n║ 1. Armors");
+  slowCout("\n║ 2. Weapons");
+  slowCout("\n║ 3. Food");
+  slowCout("\n║ 4. Usables");
+  slowCout("\n║ 5. Utilities");
+  slowCout("\n║ 6. Back to Profile");
+  cout << "\n╚═══════════════════════════════════════╝\n";
+  
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>5 || choice<1);
 
-
-  system("pause");
+  switch (choice) {
+    case 1:
+      showArmorInventory(character);
+      break;;
+    case 2:
+      showWeaponInventory(character);
+      break;
+    case 3:
+      showFoodInventory(character); 
+      break;
+    case 4:
+      showUsablesInventory(character); 
+      break;
+    case 5:
+      showUtilitiesInventory(character); 
+      break;
+    default:
+    return;
+  }
   return;
 }
 
 void showAbilities(Character &character)
 {
+  clearScreen();
   cout << "╔═══════════════════════════════════════╗\n";
   slowCout("║ "+stringToUpper(character.name));
   slowCout("'S ABILITIES\n");
   cout << "╠═══════════════════════════════════════╣\n";
   cout << "╠═══════════════════════════════════════╣\n";
-  cout << "║ DEFENCE: ";
-  cout << "║ CRITICAL: ";
-  cout << "║ DEXTERITY: ";
-  cout << "║ STRENGHT: ";
+  cout << "║ DEFENSE: ";
+  slowCout(to_string(character.defense));
+  cout << "\n║ CRITICAL: ";
+  slowCout(to_string(character.critical));
+  cout << "\n║ DEXTERITY: ";
+  slowCout(to_string(character.dexterity));
+  cout << "\n║ STRENGHT: ";
+  slowCout(to_string(character.strength));
+  cout << "\n╚═══════════════════════════════════════╝\n";
 
-  system("pause");
+  cout << "\n";
+  slowCout("Press anything to return to Profile");
+  string temp;
+  cin >> temp;
   return;
 }
 
@@ -861,14 +962,15 @@ void profile(Character &character)
 
   switch (choice) {
     case 1:
-      // showInventory(character);
-      return;
+      showInventory(character);
+      break;;
     case 2:
       showAbilities(character);
-      return;
+      break;
     case 3:
        return;
   }
+  profile(character);
   return;
 }
 
@@ -884,6 +986,11 @@ void mhaPub (Character character)
   slowCout("2. Buy beer (4 coins)\n");
   slowCout("3. Buy whisky (20 coins)\n");
   slowCout("4. Back to the Association hall\n");
+
+  slowCout("\nYou have ");
+  slowCout(to_string(character.coins));
+  slowCout(" coins");
+
   int choice;
   do{
     cout << "\nSelect a number > ";
