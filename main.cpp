@@ -736,20 +736,119 @@ shopx:
   }
 }
 
+void showObject(json object, string inventoryType)
+{
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ Showing info for ");
+  slowCout(object["name"]);
+  cout << "\n╠═══════════════════════════════════════╣\n";
+
+  if(inventoryType == "armor")
+  {
+    slowCout("║ ");
+    slowCout("Defence: ");
+    cout << object["defense"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+
+  if(inventoryType == "weapon")
+  {
+    slowCout("║ ");
+    slowCout("Damage: ");
+    cout << object["damage"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+
+  if(inventoryType == "food")
+  {
+    slowCout("║ ");
+    slowCout("Saturation: ");
+    cout << object["hunger_recovery"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+
+  if(inventoryType == "potion")
+  {
+    slowCout("║ ");
+    slowCout("Healing: ");
+    cout << object["health_recovery"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+
+  if(inventoryType == "utilitie")
+  {
+    slowCout("║ ");
+    slowCout("Effect: ");
+    cout << object["effect"];
+    slowCout("\n║ ");
+    slowCout("Duration: ");
+    cout << object["duration"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+}
+
 extern void showInventory(Character &character);
 
 void showArmorInventory(Character &character)
 {
+  int i=0;
   clearScreen();
   cout << "╔═══════════════════════════════════════╗\n";
   slowCout("║ "+stringToUpper(character.name));
   slowCout("'S ARMORS\n");
   cout << "╠═══════════════════════════════════════╣\n";
-  for(int i =0; i<character.inventory.size(); i++)
+  for(i=0; i<character.inventory.size(); i++)
   {
     if(character.inventory[i]["type"] == "armor")
     {
       slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
       slowCout(character.inventory[i]["name"]);
       slowCout(" X ");
       slowCout(to_string(character.inventory[i]["count"]));
@@ -758,6 +857,15 @@ void showArmorInventory(Character &character)
   }
   cout << "╚═══════════════════════════════════════╝\n";
   cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "armor");
+
   slowCout("Press anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
@@ -767,16 +875,18 @@ void showArmorInventory(Character &character)
 
 void showWeaponInventory(Character &character)
 {
+  int i=0;
   clearScreen();
   cout << "╔═══════════════════════════════════════╗\n";
   slowCout("║ "+stringToUpper(character.name));
   slowCout("'S WEAPONS\n");
   cout << "╠═══════════════════════════════════════╣\n";
-  for(int i =0; i<character.inventory.size(); i++)
+  for(i =0; i<character.inventory.size(); i++)
   {
     if(character.inventory[i]["type"] == "weapon")
     {
       slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
       slowCout(character.inventory[i]["name"]);
       slowCout(" X ");
       slowCout(to_string(character.inventory[i]["count"]));
@@ -785,6 +895,14 @@ void showWeaponInventory(Character &character)
   }
   cout << "╚═══════════════════════════════════════╝\n";
   cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "weapon");
   slowCout("Enter anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
@@ -795,15 +913,17 @@ void showWeaponInventory(Character &character)
 void showFoodInventory(Character &character)
 {
   clearScreen();
+  int i=0;
   cout << "╔═══════════════════════════════════════╗\n";
   slowCout("║ "+stringToUpper(character.name));
   slowCout("'S FOOD\n");
   cout << "╠═══════════════════════════════════════╣\n";
-  for(int i =0; i<character.inventory.size(); i++)
+  for(i =0; i<character.inventory.size(); i++)
   {
     if(character.inventory[i]["type"] == "food")
     {
       slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
       slowCout(character.inventory[i]["name"]);
       slowCout(" X ");
       slowCout(to_string(character.inventory[i]["count"]));
@@ -812,6 +932,15 @@ void showFoodInventory(Character &character)
   }
   cout << "╚═══════════════════════════════════════╝\n";
   cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "food");
+
   slowCout("Enter anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
@@ -822,15 +951,17 @@ void showFoodInventory(Character &character)
 void showUsablesInventory(Character &character)
 {
   clearScreen();
+  int i=0;
   cout << "╔═══════════════════════════════════════╗\n";
   slowCout("║ "+stringToUpper(character.name));
   slowCout("'S USABLES\n");
   cout << "╠═══════════════════════════════════════╣\n";
-    for(int i =0; i<character.inventory.size(); i++)
+    for(i =0; i<character.inventory.size(); i++)
   {
     if(character.inventory[i]["type"] == "usable")
     {
       slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
       slowCout(character.inventory[i]["name"]);
       slowCout(" X ");
       slowCout(to_string(character.inventory[i]["count"]));
@@ -839,6 +970,15 @@ void showUsablesInventory(Character &character)
   }
   cout << "╚═══════════════════════════════════════╝\n";
   cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "usable");
+
   slowCout("Enter anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
@@ -849,15 +989,17 @@ void showUsablesInventory(Character &character)
 void showUtilitiesInventory(Character &character)
 {
   clearScreen();
+  int i=0;
   cout << "╔═══════════════════════════════════════╗\n";
   slowCout("║ "+stringToUpper(character.name));
   slowCout("'S UTILITIES\n");
   cout << "╠═══════════════════════════════════════╣\n";
-  for(int i =0; i<character.inventory.size(); i++)
+  for(i =0; i<character.inventory.size(); i++)
   {
     if(character.inventory[i]["type"] == "utilitie")
     {
       slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
       slowCout(character.inventory[i]["name"]);
       slowCout(" X ");
       slowCout(to_string(character.inventory[i]["count"]));
@@ -866,6 +1008,15 @@ void showUtilitiesInventory(Character &character)
   }
   cout << "╚═══════════════════════════════════════╝\n";
   cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "utilitie");
+
   slowCout("Enter anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
@@ -876,15 +1027,17 @@ void showUtilitiesInventory(Character &character)
 void showPotionsInventory(Character &character)
 {
   clearScreen();
+  int i=0;
   cout << "╔═══════════════════════════════════════╗\n";
   slowCout("║ "+stringToUpper(character.name));
   slowCout("'S POTIONS\n");
   cout << "╠═══════════════════════════════════════╣\n";
-  for(int i =0; i<character.inventory.size(); i++)
+  for(i =0; i<character.inventory.size(); i++)
   {
     if(character.inventory[i]["type"] == "potion")
     {
       slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
       slowCout(character.inventory[i]["name"]);
       slowCout(" X ");
       slowCout(to_string(character.inventory[i]["count"]));
@@ -893,6 +1046,15 @@ void showPotionsInventory(Character &character)
   }
   cout << "╚═══════════════════════════════════════╝\n";
   cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "potion");
+
   slowCout("Enter anything to return to Inventory\n> ");
   string temp;
   cin >> temp;
@@ -921,7 +1083,7 @@ void showInventory(Character &character)
   do{
     cout << "\nSelect a number > ";
     cin >> choice;
-  }while(choice>6 || choice<1);
+  }while(choice>7 || choice<1);
 
   switch (choice) {
     case 1:
