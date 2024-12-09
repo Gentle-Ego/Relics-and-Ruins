@@ -186,30 +186,19 @@ public:
     auto it = find_if(inventory.begin(), inventory.end(),
                       [&item](const json &invItem) { return invItem["name"] == item["name"]; });
               // potevo benissimo usare hasItem, ma volevo testare una cosa eheh...
-    cout << "2\n";
 
     if (it != inventory.end()) { // Se l'oggetto esiste già
-    cout << "3\n";
       if (it->contains("count")) {
-    cout << "4\n";
           (*it)["count"] = int((*it)["count"]) + 1;  // (*it)["count"].get<int>() it->at("count") è un altro modo al posto di (*it)["count"] non è un puntatore, ma iteratore
-    cout << "5\n";
       } else {
-    cout << "6\n";
           (*it)["count"] = 2;  // se "count" non esiste, usa 1 come default
-    cout << "7\n";
       }   // cosa importante, (*it)["count"] crea "count" nel caso non esista, in questo caso non importa poichè è controllato per sicurezza
     } else { // Se l'oggetto non esiste, aggiungilo con il suo 'count'
-    cout << "8\n";
       json newItem = item;
-    cout << "9\n";
       if (!newItem.contains("count")) {
-    cout << "10\n";
           newItem["count"] = 1; // Iniializza 'count' a 1 se non è presente
-    cout << "11\n";
       }
       inventory.push_back(newItem);
-    cout << "12\n";
     }
 
     write_character_to_json(character);
@@ -1408,6 +1397,7 @@ void main_menu(Character character) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void start_game(Character &character) {
+  string replacementForCinIgnore;
   string tutChoice;
   // Aspetta 5 secondi prima di iniziare il gioco
   this_thread::sleep_for(chrono::seconds(4));
@@ -1479,7 +1469,8 @@ void start_game(Character &character) {
                         character);
     }
     cout << "\n";
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     slowCout(
@@ -1501,12 +1492,14 @@ void start_game(Character &character) {
         "rest in our motel, The Golden Pidgeon, tomorrow I'll help you find "
         "the shops, and after the dungeons.\"");
     cout << "\n";
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
     slowCout("Sleeping, at the Golden Pidgeon", 100);
     slowCout(". . . . . . . .", 1000);
     cout << "\n";
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     slowCout(
@@ -1521,7 +1514,8 @@ void start_game(Character &character) {
              "today,\" she says with a grin. \"Now, let me take you on a short "
              "tour around Eràn, and then we'll head down to the association "
              "basement where the dungeons are located.\"\n\n");
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     slowCout("You follow Rosie out of The Golden Pigeon and into the heart of "
@@ -1536,7 +1530,8 @@ void start_game(Character &character) {
              "weapons to potions and magical items. Just remember, your first "
              "purchase should match your style, whether it's something more "
              "defensive or offensive.\"\n\n");
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     slowCout(
@@ -1555,7 +1550,8 @@ void start_game(Character &character) {
         "earth, as if centuries of battles and challenges have left their mark "
         "on the atmosphere. You take a deep breath, preparing yourself.\n\n");
 
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
     slowCout(
         "Rosie:\n\"But first, you'll need the right equipment. The association "
@@ -1563,7 +1559,8 @@ void start_game(Character &character) {
         "sure you're well prepared. Once you're ready, come back here, and "
         "I'll show you the way to the dungeon entrance.\"\n\n");
 
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     shop(character);
