@@ -186,30 +186,19 @@ public:
     auto it = find_if(inventory.begin(), inventory.end(),
                       [&item](const json &invItem) { return invItem["name"] == item["name"]; });
               // potevo benissimo usare hasItem, ma volevo testare una cosa eheh...
-    cout << "2\n";
 
     if (it != inventory.end()) { // Se l'oggetto esiste già
-    cout << "3\n";
       if (it->contains("count")) {
-    cout << "4\n";
-          (*it)["count"] += 1;  // it->at("count") è un altro modo al posto di (*it)["count"] non è un puntatore, ma iteratore
-    cout << "5\n";
+          (*it)["count"] = int((*it)["count"]) + 1;  // (*it)["count"].get<int>() it->at("count") è un altro modo al posto di (*it)["count"] non è un puntatore, ma iteratore
       } else {
-    cout << "6\n";
-          (*it)["count"] = 1;  // se "count" non esiste, usa 1 come default
-    cout << "7\n";
+          (*it)["count"] = 2;  // se "count" non esiste, usa 1 come default
       }   // cosa importante, (*it)["count"] crea "count" nel caso non esista, in questo caso non importa poichè è controllato per sicurezza
     } else { // Se l'oggetto non esiste, aggiungilo con il suo 'count'
-    cout << "8\n";
       json newItem = item;
-    cout << "9\n";
       if (!newItem.contains("count")) {
-    cout << "10\n";
           newItem["count"] = 1; // Iniializza 'count' a 1 se non è presente
-    cout << "11\n";
       }
       inventory.push_back(newItem);
-    cout << "12\n";
     }
 
     write_character_to_json(character);
@@ -648,11 +637,11 @@ shop:
     slowCout("Welcome to The Weapons of Valoria\n");
     break;
   case 3:
-    filename = "foods.json";
+    filename = "potions.json";
     slowCout("Welcome to The Alchemist's Kiss\n");
     break;
   case 4:
-    filename = "potions.json";
+    filename = "foods.json";
     slowCout("Welcome to Feast & Famine\n");
     break;
   case 5:
@@ -675,11 +664,12 @@ shop:
   do {
     slowCout("Would you like to Buy or Sell?\n");
     cin >> option;
-  } while (option != "Buy" && option != "Sell");
+    option = stringToLower(option);
+  } while (option != "buy" && option != "sell");
 shopx:
   vector<json> items;
 
-  if (option == "Buy") {
+  if (option == "buy") {
     items = loadShopItems(filename, character.level);
 
     // Visualizza gli oggetti disponibili da comprare
@@ -692,7 +682,7 @@ shopx:
     items = character.findItemsType(filename);
 
     // Visualizza gli oggetti disponibili da vendere
-    cout << "Available items in your inventory, that can be sell in this "
+    cout << "Available items in your inventory, that can be sold in this "
             "shop:\n";
     for (size_t i = 0; i < items.size(); ++i) {
       cout << i + 1 << ". " << items[i]["name"] << " - " << items[i]["value"]
@@ -702,12 +692,13 @@ shopx:
   }
   // Selezione e acquisto
   int itemChoice;
-  cout << "Enter the number of the item to " << option << " (or 0 to exit): ";
+  cout << "Your current coins are: " << character.coins << endl;
+  cout << "Enter the number of the item to " << stringToLower(option) << " (or 0 to exit): ";
   cin >> itemChoice;
 
   if (itemChoice > 0 && itemChoice <= items.size()) {
     json selectedItem = items[itemChoice - 1];
-    if (option == "Buy") {
+    if (option == "buy") {
       if (character.coins >= selectedItem["value"]) {
         character.coins -= int(selectedItem["value"]);
         character.addItem(selectedItem, character);
@@ -734,8 +725,404 @@ shopx:
   }
 }
 
+void showObject(json object, string inventoryType)
+{
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ Showing info for ");
+  slowCout(object["name"]);
+  cout << "\n╠═══════════════════════════════════════╣\n";
+
+  if(inventoryType == "armor")
+  {
+    slowCout("║ ");
+    slowCout("Defence: ");
+    cout << object["defense"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+
+  if(inventoryType == "weapon")
+  {
+    slowCout("║ ");
+    slowCout("Damage: ");
+    cout << object["damage"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+
+  if(inventoryType == "food")
+  {
+    slowCout("║ ");
+    slowCout("Saturation: ");
+    cout << object["hunger_recovery"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+
+  if(inventoryType == "potion")
+  {
+    slowCout("║ ");
+    slowCout("Healing: ");
+    cout << object["health_recovery"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+
+  if(inventoryType == "utilitie")
+  {
+    slowCout("║ ");
+    slowCout("Effect: ");
+    cout << object["effect"];
+    slowCout("\n║ ");
+    slowCout("Duration: ");
+    cout << object["duration"];
+    slowCout("\n║ ");
+    slowCout("Info: ");
+    cout << object["info"];
+    slowCout("\n║ ");
+    slowCout("Item level: ");
+    cout << object["level_required"];
+    slowCout("\n║ ");
+    slowCout("Item Value: ");
+    cout << object["value"];
+    cout << "\n╚═══════════════════════════════════════╝\n\n";
+  }
+}
+
+extern void showInventory(Character &character);
+
+void showArmorInventory(Character &character)
+{
+  int i=0;
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S ARMORS\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+  for(i=0; i<character.inventory.size(); i++)
+  {
+    if(character.inventory[i]["type"] == "armor")
+    {
+      slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
+      slowCout(character.inventory[i]["name"]);
+      slowCout(" X ");
+      slowCout(to_string(character.inventory[i]["count"]));
+      cout << endl;
+    }
+  }
+  cout << "╚═══════════════════════════════════════╝\n";
+  cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "armor");
+
+  slowCout("Press anything to return to Inventory\n> ");
+  string temp;
+  cin >> temp;
+  showInventory(character);
+  return;
+}
+
+void showWeaponInventory(Character &character)
+{
+  int i=0;
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S WEAPONS\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+  for(i =0; i<character.inventory.size(); i++)
+  {
+    if(character.inventory[i]["type"] == "weapon")
+    {
+      slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
+      slowCout(character.inventory[i]["name"]);
+      slowCout(" X ");
+      slowCout(to_string(character.inventory[i]["count"]));
+      cout << endl;
+    }
+  }
+  cout << "╚═══════════════════════════════════════╝\n";
+  cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "weapon");
+  slowCout("Enter anything to return to Inventory\n> ");
+  string temp;
+  cin >> temp;
+  showInventory(character);
+  return;
+}
+
+void showFoodInventory(Character &character)
+{
+  clearScreen();
+  int i=0;
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S FOOD\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+  for(i =0; i<character.inventory.size(); i++)
+  {
+    if(character.inventory[i]["type"] == "food")
+    {
+      slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
+      slowCout(character.inventory[i]["name"]);
+      slowCout(" X ");
+      slowCout(to_string(character.inventory[i]["count"]));
+      cout << endl;
+    }
+  }
+  cout << "╚═══════════════════════════════════════╝\n";
+  cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "food");
+
+  slowCout("Enter anything to return to Inventory\n> ");
+  string temp;
+  cin >> temp;
+  showInventory(character);
+  return;
+}
+
+void showUsablesInventory(Character &character)
+{
+  clearScreen();
+  int i=0;
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S USABLES\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+    for(i =0; i<character.inventory.size(); i++)
+  {
+    if(character.inventory[i]["type"] == "usable")
+    {
+      slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
+      slowCout(character.inventory[i]["name"]);
+      slowCout(" X ");
+      slowCout(to_string(character.inventory[i]["count"]));
+      cout << endl;
+    }
+  }
+  cout << "╚═══════════════════════════════════════╝\n";
+  cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "usable");
+
+  slowCout("Enter anything to return to Inventory\n> ");
+  string temp;
+  cin >> temp;
+  showInventory(character);
+  return;
+}
+
+void showUtilitiesInventory(Character &character)
+{
+  clearScreen();
+  int i=0;
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S UTILITIES\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+  for(i =0; i<character.inventory.size(); i++)
+  {
+    if(character.inventory[i]["type"] == "utilitie")
+    {
+      slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
+      slowCout(character.inventory[i]["name"]);
+      slowCout(" X ");
+      slowCout(to_string(character.inventory[i]["count"]));
+      cout << endl;
+    }
+  }
+  cout << "╚═══════════════════════════════════════╝\n";
+  cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "utilitie");
+
+  slowCout("Enter anything to return to Inventory\n> ");
+  string temp;
+  cin >> temp;
+  showInventory(character);
+  return;
+}
+
+void showPotionsInventory(Character &character)
+{
+  clearScreen();
+  int i=0;
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S POTIONS\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+  for(i =0; i<character.inventory.size(); i++)
+  {
+    if(character.inventory[i]["type"] == "potion")
+    {
+      slowCout("║ ");
+      slowCout(to_string(i+1)+". ");
+      slowCout(character.inventory[i]["name"]);
+      slowCout(" X ");
+      slowCout(to_string(character.inventory[i]["count"]));
+      cout << endl;
+    }
+  }
+  cout << "╚═══════════════════════════════════════╝\n";
+  cout << "\n";
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>i+1 || choice<1);
+
+  showObject(character.inventory[choice-1], "potion");
+
+  slowCout("Enter anything to return to Inventory\n> ");
+  string temp;
+  cin >> temp;
+  showInventory(character);
+  return;
+}
+
 void showInventory(Character &character)
 {
+  clearScreen();
+  cout << "╔═══════════════════════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S INVENTORY\n");
+  cout << "╠═══════════════════════════════════════════════════════╣\n";
+  slowCout("║ What part of the inventory would you like to see");
+  slowCout("\n║ 1. Armors");
+  slowCout("\n║ 2. Weapons");
+  slowCout("\n║ 3. Food");
+  slowCout("\n║ 4. Usables");
+  slowCout("\n║ 5. Utilities");
+  slowCout("\n║ 6. Potions");
+  slowCout("\n║ 7. Back to Profile");
+  cout << "\n╚══════════════════════════════════════════════════════╝\n";
+  
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>7 || choice<1);
+
+  switch (choice) {
+    case 1:
+      showArmorInventory(character);
+      break;;
+    case 2:
+      showWeaponInventory(character);
+      break;
+    case 3:
+      showFoodInventory(character); 
+      break;
+    case 4:
+      showUsablesInventory(character); 
+      break;
+    case 5:
+      showUtilitiesInventory(character); 
+      break;
+    case 6:
+      showPotionsInventory(character);
+      break;
+    case 7:
+      return;
+    default:
+    return;
+  }
+  return;
+}
+
+void showAbilities(Character &character)
+{
+  clearScreen();
+  cout << "╔═══════════════════════════════════════╗\n";
+  slowCout("║ "+stringToUpper(character.name));
+  slowCout("'S ABILITIES\n");
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "╠═══════════════════════════════════════╣\n";
+  cout << "║ DEFENSE: ";
+  slowCout(to_string(character.defense));
+  cout << "\n║ CRITICAL: ";
+  slowCout(to_string(character.critical));
+  cout << "\n║ DEXTERITY: ";
+  slowCout(to_string(character.dexterity));
+  cout << "\n║ STRENGHT: ";
+  slowCout(to_string(character.strength));
+  cout << "\n╚═══════════════════════════════════════╝\n";
+
+  cout << "\n";
+  slowCout("Press anything to return to Profile");
+  string temp;
+  cin >> temp;
   return;
 }
 
@@ -821,13 +1208,124 @@ void profile(Character &character)
 
   switch (choice) {
     case 1:
-      // showInventory(character);
+      showInventory(character);
+      break;;
     case 2:
-      // showAbilities(character);
+      showAbilities(character);
+      break;
     case 3:
-       main_menu(character);
+       return;
   }
+  profile(character);
   return;
+}
+
+void mhaPub (Character character)
+{
+  clearScreen();
+  int youWantToBeDrunk = 0;
+  int timesPassedOut = 0;
+  pu:
+  slowCout("You are now in the Pub.\n");
+  slowCout("What would you like to do?\n");
+  slowCout("1. Buy ale (2 coins)\n");
+  slowCout("2. Buy beer (4 coins)\n");
+  slowCout("3. Buy whisky (20 coins)\n");
+  slowCout("4. Back to the Association hall\n");
+
+  slowCout("\nYou have ");
+  slowCout(to_string(character.coins));
+  slowCout(" coins");
+
+  int choice;
+  do{
+    cout << "\nSelect a number > ";
+    cin >> choice;
+  }while(choice>4 || choice<1);
+
+  switch (choice) {
+    case 1:
+      if (character.coins >= 2) {
+        character.coins -= 2;
+        clearScreen();
+        cout << "Purchased Ale for 2 coins\n";
+      } else {
+        clearScreen();
+        cout << "Not enough coins to buy Ale. You really are that poor\n";
+      }
+      youWantToBeDrunk +=2;
+      if (youWantToBeDrunk >= 20)
+      {
+        slowCout("You drunk too much alchool and passed out, you lost 5HP\n");
+        slowCout(". . . . . ", 400);
+        slowCout("\nYou are now awake\n");
+        character.health -= 5;
+        timesPassedOut += 1;
+        youWantToBeDrunk = 0;
+      }
+      if (timesPassedOut >= 3)
+      {
+        slowCout("You really love alchool, maybe too much, everything goes dark and you die\n\n");
+        timesPassedOut = 0;
+        character.health = 0;
+      }
+      break;
+    case 2:
+      if (character.coins >= 4) {
+        character.coins -= 4;
+        clearScreen();
+        cout << "Purchased Beer for 4 coins\n";
+      } else {
+        clearScreen();
+        cout << "Not enough coins to buy Beer, very sad :( " << ".\n";
+      }
+      youWantToBeDrunk +=4;
+      if (youWantToBeDrunk >= 20)
+      {
+        slowCout("You drunk too much alchool and passed out, you lost 6HP\n");
+        slowCout(". . . . . ", 400);
+        slowCout("\nYou are now awake\n");
+        character.health -= 6;
+        timesPassedOut += 1;
+        youWantToBeDrunk = 0;
+      }
+      if (timesPassedOut >= 3)
+      {
+        slowCout("You really love alchool, maybe too much, everything goes dark and you die\n\n");
+        timesPassedOut = 0;
+        character.health = 0;
+      }
+      break;
+    case 3:
+      if (character.coins >= 20) {
+        character.coins -= 20;
+        clearScreen();
+        cout << "Purchased Whisky for 20 coins\n";
+      } else {
+        clearScreen();
+        cout << "Not enough coins to buy Whisky, you are poor" << ".\n";
+      }
+      youWantToBeDrunk +=10;
+      if (youWantToBeDrunk >= 20)
+      {
+        slowCout("You drunk too much alchool and passed out, you lost 10HP\n");
+        slowCout(". . . . . ", 400);
+        slowCout("\nYou are now awake\n");
+        character.health -= 10;
+        timesPassedOut += 1;
+        youWantToBeDrunk = 0;
+      }
+      if (timesPassedOut >= 3)
+      {
+        slowCout("You really love alchool, maybe too much, everything goes dark and you die\n\n");
+        timesPassedOut = 0;
+        character.health = 0;
+      }
+      break;
+    default:
+      return;
+  }
+  goto pu;
 }
 
 void mha_menu(Character character) {
@@ -837,8 +1335,8 @@ void mha_menu(Character character) {
   slowCout("You are now in the Monster Hunter Association.\n");
   slowCout("What would you like to do?\n");
   slowCout("1. Go to the Dungeons\n");
-  slowCout("2. Go to the Quests Board\n");
-  slowCout("3. Talk to Rosie\n");
+  slowCout("2. Check the Hall of Fame\n");
+  slowCout("3. Go to the pub\n");
   slowCout("4. Exit the Association\n");
   int choice;
   do{
@@ -849,13 +1347,19 @@ void mha_menu(Character character) {
   switch (choice) {
     case 1:
       // dungeonsMenu(character);
-    case 2:
-      // questsMenu(character);
+      break;
+    case 2:{
+      json leaderboards_data = load_leaderboards_data("ideal_leads.json");
+      leaderboards_menu(leaderboards_data);
+    }
+      break;
     case 3:
-      // rosie(character);
-    case 4:
+      mhaPub(character);
+      break;
+    default:
       return;
   }
+  mha_menu(character);
 }
 
 void main_menu(Character character) {
@@ -867,8 +1371,7 @@ void main_menu(Character character) {
   slowCout("1. Go to the shop\n");
   slowCout("2. Go to the Monster Hunter Association\n");
   slowCout("3. Check your profile\n");
-  slowCout("4. Check the Hall of Fame\n");
-  slowCout("5. Quit game\n");
+  slowCout("4. Quit game\n");
   int choice;
   do{
     cout << "\nSelect a number > ";
@@ -878,14 +1381,13 @@ void main_menu(Character character) {
   switch (choice) {
     case 1:
       shop(character);
+      break;
     case 2:
       mha_menu(character);
+      break;
     case 3:
       profile(character);
-    case 4:{
-      json leaderboards_data = load_leaderboards_data("ideal_leads.json");
-      leaderboards_menu(leaderboards_data);
-    }
+      break;
     default:
       return;
   }
@@ -894,7 +1396,8 @@ void main_menu(Character character) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void start_game(Character character) {
+void start_game(Character &character) {
+  string replacementForCinIgnore;
   string tutChoice;
   // Aspetta 5 secondi prima di iniziare il gioco
   this_thread::sleep_for(chrono::seconds(4));
@@ -966,7 +1469,8 @@ void start_game(Character character) {
                         character);
     }
     cout << "\n";
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     slowCout(
@@ -988,12 +1492,14 @@ void start_game(Character character) {
         "rest in our motel, The Golden Pidgeon, tomorrow I'll help you find "
         "the shops, and after the dungeons.\"");
     cout << "\n";
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
     slowCout("Sleeping, at the Golden Pidgeon", 100);
     slowCout(". . . . . . . .", 1000);
     cout << "\n";
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     slowCout(
@@ -1008,7 +1514,8 @@ void start_game(Character character) {
              "today,\" she says with a grin. \"Now, let me take you on a short "
              "tour around Eràn, and then we'll head down to the association "
              "basement where the dungeons are located.\"\n\n");
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     slowCout("You follow Rosie out of The Golden Pigeon and into the heart of "
@@ -1023,7 +1530,8 @@ void start_game(Character character) {
              "weapons to potions and magical items. Just remember, your first "
              "purchase should match your style, whether it's something more "
              "defensive or offensive.\"\n\n");
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     slowCout(
@@ -1042,7 +1550,8 @@ void start_game(Character character) {
         "earth, as if centuries of battles and challenges have left their mark "
         "on the atmosphere. You take a deep breath, preparing yourself.\n\n");
 
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
     slowCout(
         "Rosie:\n\"But first, you'll need the right equipment. The association "
@@ -1050,7 +1559,8 @@ void start_game(Character character) {
         "sure you're well prepared. Once you're ready, come back here, and "
         "I'll show you the way to the dungeon entrance.\"\n\n");
 
-    system("pause");
+    cout << "Enter anything to contunue\n";
+    cin >> replacementForCinIgnore;
     clearScreen();
 
     shop(character);
@@ -1062,9 +1572,10 @@ void start_game(Character character) {
   } else if (character.current_dungeon == -2) {
     shop(character);
   } else if (character.current_dungeon == -3) {
-    // mha_menu(character);
+    mha_menu(character);
   } else {
   }
+  main_menu(character);
   return;
 }
 
@@ -1111,6 +1622,7 @@ void select_char() {
                    << chosen_char.level << ")\n";
               x = false;
               start_game(chosen_char);
+              return;
             }
           }
         } while (x);
@@ -1149,6 +1661,7 @@ void select_char() {
            << chosen_char.level << ")\n";
       chosen_char.write_character_to_json(chosen_char);
       start_game(chosen_char);
+      return;
     }
   } while (scelta != "YES" && scelta != "NO");
 }
